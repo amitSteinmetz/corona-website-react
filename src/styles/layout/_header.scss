@@ -1,0 +1,17 @@
+.header__gradient-line {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 100%;
+  height: 2px;
+  background-image: linear-gradient(to right, #4bb887, #16b6d0, #d6e58a);
+  transform: translate(100%);
+  transition: all 8s;
+}
+
+.header__gradient-line.active {
+  transform: translate(0);
+}
+
+
