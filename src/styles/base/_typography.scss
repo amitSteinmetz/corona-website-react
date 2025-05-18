@@ -1,0 +1,51 @@
+// Font size variables
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+$font-size-2xl: 1.5rem;
+$font-size-3xl: 1.875rem;
+
+// Optional utility classes
+.font-xs {
+  font-size: $font-size-xs;
+}
+.font-sm {
+  font-size: $font-size-sm;
+}
+.font-base {
+  font-size: $font-size-base;
+}
+.font-lg {
+  font-size: $font-size-lg;
+}
+.font-xl {
+  font-size: $font-size-xl;
+}
+.font-2xl {
+  font-size: $font-size-2xl;
+}
+.font-3xl {
+  font-size: $font-size-3xl;
+}
+
+* {
+  font-family: "Open Sans", sans-serif;
+}
+
+.dark-mode-background {
+  background-color: $darkBlueBackground;
+}
+
+.light-mode-background {
+  background-color: white;
+}
+
+.dark-mode-text {
+  color: white;
+}
+
+.light-mode-text {
+  color: $darkBlueBackground;
+}

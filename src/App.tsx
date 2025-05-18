@@ -1,12 +1,12 @@
-import './App.css';
-import { BrowserRouter } from 'react-router-dom';
-import Header from './components/main/Header';
+import "./App.css";
+import AppRouter from "./components/main/AppRouter";
+import AppProviders from "./contexts/AppProviders";
 
 function App() {
   return (
-    <BrowserRouter>
-    <Header></Header>
-    </BrowserRouter>
+    <AppProviders>
+      <AppRouter />
+    </AppProviders>
   );
 }
 

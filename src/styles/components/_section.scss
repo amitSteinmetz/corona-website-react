@@ -1,0 +1,21 @@
+.card {
+  background: $cardBackgroundColor;
+  color: $darkBlueBackground;
+  border-radius: 10px;
+  box-shadow: 3px 3px 11px #465a7a1c;
+//   display: flex;
+//   flex-direction: column;
+//   height: 100%;
+//   width: 100%;
+  border: 1px solid rgba(186, 186, 186, 0.23);
+
+  .card__more-info-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+
+  }
+}
