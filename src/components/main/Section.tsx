@@ -3,44 +3,53 @@ import { moreInfoBtn } from "../../assets/svgs";
 const Section = ({ sectionData }) => {
   return (
     <div className="section-container">
-      <h1>{sectionData.sectionTitle}</h1>
+      <h1 className="section-container__title font-xl">
+        {sectionData.sectionTitle}
+      </h1>
 
-      <div className="card">
+      <div className="section-cards">
         {sectionData.sectionCards.map((card, index: number) => (
           <div className="card" key={index}>
-            <img
-              src={moreInfoBtn}
-              alt="more info"
-              className="card__more-info-btn"
-            />
-            <h5 className="card__title">{card.cardTitle}</h5>
-            <div className="card__body">
-              <div className="data-number">{card.cardBody.dataNumber}</div>
+            <div className="card-header">
+              <div className="card__title font-base bold line-height-2xl">
+                {card.cardTitle}
+              </div>
 
-              {card.cardBody.dataLines.map((line, index: number) => (
-                <div className="data-line" key={index}>
-                  <div className="data-line__amount">{line.amount}</div>
-                  <div className="data-line__text">{line.text}</div>
+              <img
+                src={moreInfoBtn}
+                alt="more info"
+                className="card__more-info-btn"
+              />
+            </div>
+
+            <div className="card__body">
+              {card.cardBody.mainData.map((data, index: number) => (
+                <div className="main-data-line" key={index}>
+                  {data.text && <span className="main-data__text font-xs">{data.text}</span>}
+
+                  <span
+                    className={`main-data__amount bold line-height-xl ${
+                      !data.text ? "main-data-bigger-font" : "main-data-smaller-font"
+                    }`}
+                  >
+                    {data.amount}
+                  </span>
+                </div>
+              ))}
+
+              {card.cardBody.additionalData?.map((line, index: number) => (
+                <div className="additional-data-line" key={index}>
+                  <span className="additional-data__amount font-xs bold line-height-xl">
+                    {line.amount}
+                  </span>
+                  <span className="additional-data__text font-xs">
+                    {line.text}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
         ))}
-        {/* <img src={moreInfoBtn} alt="more info" className="card__more-info-btn" />
-        <h5 className="card__title">{sectionData.sectionCards[0].cardTitle}</h5>
-        <div className="card__body">
-          <div className="data-number">2</div>
-
-          <div className="data-line">
-            <div className="data-line__number">0</div>
-            <div className="data-line__text">מחצות</div>
-          </div>
-
-          <div className="data-line">
-            <div className="data-line__number">4,860,604</div>
-            <div className="data-line__text">סה"כ</div>
-          </div>
-        </div> */}
       </div>
     </div>
   );

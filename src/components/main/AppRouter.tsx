@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import Section from "./Section";
 import { DataContext } from "../../contexts/DataContext";
+import { sideNavArrowBtn } from "../../assets/svgs";
 
 function AppRouter() {
   const { theme } = useContext(ThemeContext);
@@ -12,16 +13,39 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <div
-        className={`all-page-container ${
+        className={`all-page__container ${
           theme === "dark" ? "dark-mode-background" : ""
         }`}
       >
         <Header></Header>
 
-        {dataSections.map((sectionData, index) => (
-          console.log(sectionData),
-          <Section key={index} sectionData={sectionData}></Section>
-        ))}
+        <div className="inner-page__container">
+          <div className="side-nav">
+            <img
+              src={sideNavArrowBtn}
+              alt="hamburger"
+              className="side-nav__btn"
+            />
+          </div>
+
+          <div className="page-body">
+            <div className="page-location">עולם הדאטא &gt; קורונה </div>
+
+            <div className="page-headline">
+              <h1 className="page-headline__title font-2xl bold">קורונה</h1>
+              <div className="last-update">
+                <span className="bold">עדכון אחרון:</span> 11/05/25, 04:10
+              </div>
+            </div>
+
+            {dataSections.map(
+              (sectionData, index) => (
+                console.log(sectionData),
+                (<Section key={index} sectionData={sectionData}></Section>)
+              )
+            )}
+          </div>
+        </div>
       </div>
     </BrowserRouter>
   );

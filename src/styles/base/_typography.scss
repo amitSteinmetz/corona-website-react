@@ -7,7 +7,22 @@ $font-size-xl: 1.25rem;
 $font-size-2xl: 1.5rem;
 $font-size-3xl: 1.875rem;
 
-// Optional utility classes
+// Font weight variables
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Line Height variables
+$line-height-xs: 0.75;
+$line-height-sm: 0.875;
+$line-height-base: 1r;
+$line-height-lg: 1.125;
+$line-height-xl: 1.25;
+$line-height-2xl: 1.5;
+$line-height-3xl: 1.875;
+
 .font-xs {
   font-size: $font-size-xs;
 }
@@ -28,6 +43,48 @@ $font-size-3xl: 1.875rem;
 }
 .font-3xl {
   font-size: $font-size-3xl;
+}
+
+.light {
+  font-weight: $font-weight-light;
+}
+
+.regular {
+  font-weight: $font-weight-regular;
+}
+
+.medium {
+  font-weight: $font-weight-medium;
+}
+
+.semibold {
+  font-weight: $font-weight-semibold;
+}
+
+.bold {
+  font-weight: $font-weight-bold;
+}
+
+.line-height-xs {
+  line-height: $line-height-xs;
+}
+.line-height-sm {
+  line-height: $line-height-sm;
+}
+.line-height-base {
+  line-height: $line-height-base;
+}
+.line-height-lg {
+  line-height: $line-height-lg;
+}
+.line-height-xl {
+  line-height: $line-height-xl;
+}
+.line-height-2xl {
+  line-height: $line-height-2xl;
+}
+.line-height-3xl {
+  line-height: $line-height-3xl;
 }
 
 * {

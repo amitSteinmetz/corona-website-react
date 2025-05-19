@@ -45,11 +45,15 @@ const Header = () => {
       ></div>
 
       <div className="header__main-content">
-        <div className="header__icons">
-          <button onClick={toggleTheme}>
-            <img src={changeThemeColorBtn} alt="כפתור שינוי רקע" />
-          </button>
+        <button className="header__hamburger-btn">
+          <img src={hamburgerBtn} alt="תפריט" />
+        </button>
+        
+        <img className="header__logo" src={logo} alt="לוגו משרד הבריאות" />
 
+        <div className="header__title">עולם הדאטה</div>
+
+        <div className="header__icons">
           <button>
             <img
               className="change-language-icon"
@@ -57,15 +61,11 @@ const Header = () => {
               alt="כפתור שינוי שפה"
             />
           </button>
+
+          <button onClick={toggleTheme}>
+            <img src={changeThemeColorBtn} alt="כפתור שינוי רקע" />
+          </button>
         </div>
-
-        <div className="header__title">עולם הדאטה</div>
-
-        <img className="header__logo" src={logo} alt="לוגו משרד הבריאות" />
-
-        <button className="header__hamburger-btn">
-          <img src={hamburgerBtn} alt="תפריט" />
-        </button>
       </div>
 
       <div className="header__nav-wrapper">

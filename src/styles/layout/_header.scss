@@ -1,3 +1,7 @@
+.header-container {
+  position: sticky;
+}
+
 .header__gradient-line {
   position: absolute;
   top: 0;
@@ -21,11 +25,11 @@
 
   .header__title {
     font-weight: 700;
-    color: $textColor;
+    color: $textBasicColor;
     margin-right: 10px;
     padding: 5px 0;
     flex: 1;
-    direction: rtl;
+    
   }
 
   .header__icons {
@@ -66,6 +70,8 @@
 .header__nav-wrapper {
   overflow-x: auto;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  position: relative;
 
   &::-webkit-scrollbar {
     display: none;
@@ -117,10 +123,6 @@
     .header__title {
       font-size: 24px;
       margin: 0 20px;
-
-      &::after {
-        content: " של משרד הבריאות";
-      }
     }
 
     .header__hamburger-btn {
@@ -162,6 +164,12 @@
       }
     }
   }
+}
+
+@media (min-width: 768px) {
+.header__main-content .header__title::after {
+  content: " של משרד הבריאות";
+}
 }
 
 @media (min-width: 1200px) {
