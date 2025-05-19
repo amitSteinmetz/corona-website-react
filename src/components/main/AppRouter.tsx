@@ -40,7 +40,6 @@ function AppRouter() {
 
             {dataSections.map(
               (sectionData, index) => (
-                console.log(sectionData),
                 (<Section key={index} sectionData={sectionData}></Section>)
               )
             )}

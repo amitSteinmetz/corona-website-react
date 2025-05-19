@@ -10,10 +10,13 @@
   .section-cards {
     margin-top: 1rem;
     padding: 0.5rem 0 0.5rem 10px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    // display: grid;
+    // grid-template-columns: repeat(2, 1fr);
     min-height: 378px;
-    column-gap: 20px;
+    // column-gap: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 
     .card {
       background: $cardBackgroundColor;
@@ -22,6 +25,8 @@
       box-shadow: 3px 3px 11px #465a7a1c;
       min-height: 184px;
       padding: 10px;
+      width: 40%;
+      margin: 0 10px;
       margin-bottom: 20px;
       position: relative;
       // border: 1px solid rgba(186, 186, 186, 0.23);
@@ -41,7 +46,7 @@
       .card__body {
         .main-data-line {
           display: grid;
-          grid-template-columns: 25% 75%;
+          grid-template-columns: 35% 65%;
           align-items: baseline;
         }
         .main-data__amount {
@@ -69,6 +74,21 @@
 
     .section-cards {
       margin-bottom: 1rem;
+      grid-template-columns: repeat(4, 1fr);
+
+      .card .card__body {
+        .main-data-line {
+          // grid-template-columns: 25% 75%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .section-container {
+    .section-cards {
+      grid-template-columns: repeat(6, 1fr);
     }
   }
 }
