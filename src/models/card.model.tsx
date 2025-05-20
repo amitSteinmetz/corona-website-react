@@ -11,7 +11,9 @@ export interface TextualCard extends BaseCard {
 }
 
 export interface GraphicalCard extends BaseCard {
-  body: {};
+  body: {
+    data;
+  };
 }
 
 export interface ContainerCard extends BaseCard {
