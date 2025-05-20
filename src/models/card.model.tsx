@@ -1,20 +1,21 @@
-export interface Card {
-  cardTitle: string;
-  children? : Card[];
-}
-
-export interface TextualCard extends Card {
-  cardBody: {
-    mainData?: Array<{ amount: string; text: string }>;
-    additionalData?: Array<{ amount: string; text: string }>;
-  };
+export interface BaseCard {
+  title: string;
   type: string;
 }
 
-export interface GraphicalCard extends Card {
-  cardBody: {
-    mainData?: Array<{ amount: string; text: string }>;
+export interface TextualCard extends BaseCard {
+  body: {
+    mainData: Array<{ amount: string; text?: string }>;
     additionalData?: Array<{ amount: string; text: string }>;
   };
-  type: string
 }
+
+export interface GraphicalCard extends BaseCard {
+  body: {};
+}
+
+export interface ContainerCard extends BaseCard {
+  children: CardModel[];
+}
+
+export type CardModel = TextualCard | GraphicalCard | ContainerCard;

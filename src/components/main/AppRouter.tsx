@@ -8,7 +8,7 @@ import { sideNavArrowBtn } from "../../assets/svgs";
 
 function AppRouter() {
   const { theme } = useContext(ThemeContext);
-  const { dataSections } = useContext(DataContext);
+  const { sections } = useContext(DataContext);
 
   return (
     <BrowserRouter>
@@ -38,9 +38,9 @@ function AppRouter() {
               </div>
             </div>
 
-            {dataSections.map(
+            {sections.map(
               (sectionData, index) => (
-                (<Section key={index} sectionData={sectionData}></Section>)
+                <Section key={index} sectionData={sectionData}></Section>
               )
             )}
           </div>

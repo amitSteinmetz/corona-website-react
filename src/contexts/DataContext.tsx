@@ -1,14 +1,16 @@
 import { createContext, useState } from "react";
-import { TextualCard, Card, GraphicalCard } from "../models/card.model";
+import { CardModel } from "../models/card.model";
+import { SectionModel } from "../models/section.model";
+import { DataContextType } from "../models/dataContextType.model";
 
-export const DataContext = createContext(null);
+export const DataContext = createContext<DataContextType>(null);
 
 const DataProvider = ({ children }) => {
-  const sectionsCards = [
+  const sectionsCards: CardModel[][] = [
     [
       {
-        cardTitle: "מאומתים אתמול",
-        cardBody: {
+        title: "מאומתים אתמול",
+        body: {
           mainData: [{ amount: "2", text: null }],
           additionalData: [
             {
@@ -25,8 +27,8 @@ const DataProvider = ({ children }) => {
       },
 
       {
-        cardTitle: "חולים פעילים",
-        cardBody: {
+        title: "חולים פעילים",
+        body: {
           mainData: [{ amount: "368", text: null }],
           additionalData: [
             {
@@ -39,8 +41,8 @@ const DataProvider = ({ children }) => {
       },
 
       {
-        cardTitle: "מתחסנים",
-        cardBody: {
+        title: "מתחסנים",
+        body: {
           mainData: [
             { amount: "6,725,492", text: "מנה 1" },
             { amount: "6,148,759", text: "מנה 2" },
@@ -54,8 +56,8 @@ const DataProvider = ({ children }) => {
       },
 
       {
-        cardTitle: "נפטרים מצטבר",
-        cardBody: {
+        title: "נפטרים מצטבר",
+        body: {
           mainData: [{ amount: "13,171", text: null }],
           additionalData: null,
         },
@@ -63,8 +65,8 @@ const DataProvider = ({ children }) => {
       },
 
       {
-        cardTitle: "אחוז נבדקים חיוביים אתמול",
-        cardBody: {
+        title: "אחוז נבדקים חיוביים אתמול",
+        body: {
           mainData: [{ amount: "1.96%", text: null }],
           additionalData: [
             { amount: "102", text: "נבדקים לגילוי הנגיף אתמול" },
@@ -75,27 +77,28 @@ const DataProvider = ({ children }) => {
       },
 
       {
-        cardTitle: "סיכום 7 ימים אחרונים",
+        title: "סיכום 7 ימים אחרונים",
+        type: "container",
         children: [
           {
-            cardTitle: "מספר המאומתים",
-            cardBody: {
+            title: "מספר המאומתים",
+            body: {
               mainData: [{ amount: "49", text: null }],
               additionalData: [{ amount: "+32.4%", text: "משבעה ימים קודמים" }],
             },
             type: "textual",
           },
           {
-            cardTitle: "מספר נפטרים",
-            cardBody: {
+            title: "מספר נפטרים",
+            body: {
               mainData: [{ amount: "0", text: null }],
               additionalData: [{ amount: "0%", text: "משבעה ימים קודמים" }],
             },
             type: "textual",
           },
           {
-            cardTitle: "מספר נבדקים",
-            cardBody: {
+            title: "מספר נבדקים",
+            body: {
               mainData: [{ amount: "49", text: null }],
               additionalData: [
                 { amount: "+1%", text: "משבעה ימים קודמים" },
@@ -109,19 +112,15 @@ const DataProvider = ({ children }) => {
     ],
   ];
 
-  const sections = [
+  const [sections, setSections] = useState<SectionModel[]>([
     {
-      sectionTitle: "מבט על",
-      sectionCards: sectionsCards[0],
+      title: "מבט על",
+      cards: sectionsCards[0],
     },
-  ];
-
-  const [dataSections, setDataSections] = useState(sections);
+  ]);
 
   return (
-    <DataContext.Provider value={{ dataSections }}>
-      {children}
-    </DataContext.Provider>
+    <DataContext.Provider value={{ sections }}>{children}</DataContext.Provider>
   );
 };
 

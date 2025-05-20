@@ -5,14 +5,14 @@ const TextualCard = ({ card }) => (
   <div className="card">
     <div className="card-header">
       <div className="card__title font-base bold line-height-2xl">
-        {card.cardTitle}
+        {card.title}
       </div>
 
       <img src={moreInfoBtn} alt="more info" className="card__more-info-btn" />
     </div>
 
     <div className="card__body">
-      {card.cardBody.mainData.map((data, index: number) => (
+      {card.body.mainData.map((data, index: number) => (
         <div className="main-data-line" key={index}>
           {data.text && (
             <span className="main-data__text font-xs">{data.text}</span>
@@ -28,7 +28,7 @@ const TextualCard = ({ card }) => (
         </div>
       ))}
 
-      {card.cardBody.additionalData?.map((line, index: number) => (
+      {card.body.additionalData?.map((line, index: number) => (
         <div className="additional-data-line" key={index}>
           <span className="additional-data__amount font-xs bold line-height-xl">
             {line.amount}
@@ -37,9 +37,9 @@ const TextualCard = ({ card }) => (
         </div>
       ))}
 
-      {card.cardBody.cards && (
+      {card.body.cards && (
         <div className="nested-cards">
-          {card.cardBody.cards.map((nestedCard, index) =>
+          {card.body.cards.map((nestedCard, index) =>
             card.type === "textual" ? (
               <TextualCard key={index} card={nestedCard} />
             ) : (

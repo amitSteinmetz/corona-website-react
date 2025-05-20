@@ -1,15 +1,15 @@
-import Card from "./cards/Card";
+import { useEffect } from "react";
+import CardRenderer from "./cards/CardRenderer";
+import { SectionModel } from "../../models/section.model";
 
-const Section = ({ sectionData }) => {
+const Section = ({ sectionData }: { sectionData: SectionModel }) => {
   return (
     <div className="section-container">
-      <h1 className="section-container__title font-xl">
-        {sectionData.sectionTitle}
-      </h1>
+      <h1 className="section-container__title font-xl">{sectionData.title}</h1>
 
       <div className="section-cards">
-        {sectionData.sectionCards.map((card, index: number) => (
-          <Card card={card} key={index}></Card>
+        {sectionData.cards.map((card, index: number) => (
+          <CardRenderer card={card} key={index}></CardRenderer>
         ))}
       </div>
     </div>
