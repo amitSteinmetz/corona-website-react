@@ -4,16 +4,12 @@ export interface BaseCard {
 }
 
 export interface TextualCard extends BaseCard {
-  body: {
-    mainData: Array<{ amount: string; text?: string }>;
-    additionalData?: Array<{ amount: string; text: string }>;
-  };
+  mainData: Array<{ amount: string; text?: string }>;
+  additionalData?: Array<{ amount: string; text: string }>;
 }
 
 export interface GraphicalCard extends BaseCard {
-  body: {
-    data;
-  };
+  option;
 }
 
 export interface ContainerCard extends BaseCard {

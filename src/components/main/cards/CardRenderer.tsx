@@ -1,5 +1,7 @@
 import TextualCard from "./TextualCard";
 import GraphicalCard from "./GraphicalCard";
+import { useEffect } from "react";
+
 
 const CardRenderer = ({ card }) => {
   function isCardHasChildren() {
@@ -11,7 +13,7 @@ const CardRenderer = ({ card }) => {
       case "textual":
         return <TextualCard card={card} />;
       case "graphical":
-        return <GraphicalCard />;
+        return <GraphicalCard card={card} />;
     }
   }
 

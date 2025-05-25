@@ -1,5 +1,4 @@
 import { moreInfoBtn } from "../../../assets/svgs";
-import GraphicalCard from "./GraphicalCard";
 
 const TextualCard = ({ card }) => (
   <div className="card">
@@ -12,7 +11,7 @@ const TextualCard = ({ card }) => (
     </div>
 
     <div className="card__body">
-      {card.body.mainData.map((data, index: number) => (
+      {card.mainData.map((data, index: number) => (
         <div className="main-data-line" key={index}>
           {data.text && (
             <span className="main-data__text font-xs">{data.text}</span>
@@ -28,7 +27,7 @@ const TextualCard = ({ card }) => (
         </div>
       ))}
 
-      {card.body.additionalData?.map((line, index: number) => (
+      {card.additionalData?.map((line, index: number) => (
         <div className="additional-data-line" key={index}>
           <span className="additional-data__amount font-xs bold line-height-xl">
             {line.amount}
@@ -36,18 +35,6 @@ const TextualCard = ({ card }) => (
           <span className="additional-data__text font-xs">{line.text}</span>
         </div>
       ))}
-
-      {card.body.cards && (
-        <div className="nested-cards">
-          {card.body.cards.map((nestedCard, index) =>
-            card.type === "textual" ? (
-              <TextualCard key={index} card={nestedCard} />
-            ) : (
-              <GraphicalCard key={index} />
-            )
-          )}
-        </div>
-      )}
     </div>
   </div>
 );
