@@ -121,9 +121,7 @@ const DataProvider = ({ children }) => {
             top: 40,
             bottom: 40,
           },
-          tooltip: {
-            trigger: "item",
-          },
+          
           xAxis: {
             type: "category",
             data: ["20.04-26.04", "27.04-03.05", "04.05-10.05", "dummy-point"],
@@ -165,17 +163,17 @@ const DataProvider = ({ children }) => {
               step: "end",
               data: [5, 5, 7, 7],
               lineStyle: {
-                color: "#0068f5",
+                color: "rgb(0, 208, 245)",
                 width: 2,
               },
               symbol: "circle",
               symbolSize: 1,
-
+              itemStyle: {
+                color: "rgb(0, 208, 245)",
+              },
               emphasis: {
                 focus: "series",
-                symbol: "circle",
                 scale: 8,
-                symbolSize: 16,
               },
               label: {
                 show: true,
@@ -188,7 +186,7 @@ const DataProvider = ({ children }) => {
               markArea: {
                 silent: true,
                 itemStyle: {
-                  color: "rgba(0, 104, 245, 0.03)", // blue with opacity
+                  color: "rgba(0, 237, 245, 0.03)", // blue with opacity
                 },
                 data: [
                   [
