@@ -1,0 +1,6 @@
+@corona_server_side_asp.net_HostAddress = http://localhost:5156
+
+GET {{corona_server_side_asp.net_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

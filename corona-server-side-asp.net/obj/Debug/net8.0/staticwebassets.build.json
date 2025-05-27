@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "SD8ilfORqFGf95+ZZdvTxO3PNfEEQPfOgDZ/G40MXyY=",
+  "Source": "corona-server-side-asp.net",
+  "BasePath": "_content/corona-server-side-asp.net",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
