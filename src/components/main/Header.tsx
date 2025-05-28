@@ -36,6 +36,15 @@ const Header = () => {
     });
   }
 
+  useEffect(() => {
+    fetch("https://localhost:7287/api/Sections")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.error("Error:", err));
+  }, []);
+
   return (
     <div className="header-container">
       <div
@@ -48,7 +57,7 @@ const Header = () => {
         <button className="header__hamburger-btn">
           <img src={hamburgerBtn} alt="תפריט" />
         </button>
-        
+
         <img className="header__logo" src={logo} alt="לוגו משרד הבריאות" />
 
         <div className="header__title">עולם הדאטה</div>

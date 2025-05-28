@@ -3,10 +3,7 @@ import { moreInfoBtn } from "../../../assets/svgs";
 import { FiMoreVertical } from "react-icons/fi";
 
 const GraphicalCard = ({ card }) => {
-  // useEffect(() => {
-  //   console.log(option);
-  // }, []);
-
+ 
   return (
     <div className="graph-container card">
       <div className="graph-container__header">
