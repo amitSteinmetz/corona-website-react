@@ -1,23 +1,139 @@
 [
   {
-    "ContainingType": "corona_server_side_asp.net.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
+    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
+    "Method": "AddContainerCardToSection",
+    "RelativePath": "api/Cards/add-container-card/{sectionId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "card",
+        "Type": "corona_server_side_asp.net.Models.Cards.ContainerCardModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
+    "Method": "AddGraphicalCardToSection",
+    "RelativePath": "api/Cards/add-graphical-card/{sectionId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "card",
+        "Type": "corona_server_side_asp.net.Models.Cards.GraphicalCardModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
+    "Method": "AddTextualCardToSection",
+    "RelativePath": "api/Cards/add-textual-card/{sectionId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "card",
+        "Type": "corona_server_side_asp.net.Models.Cards.TextualCardModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
+    "Method": "GetSectionContainerCards",
+    "RelativePath": "api/Cards/get-container-cards/{sectionId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
+    "Method": "GetSectionGraphicalCards",
+    "RelativePath": "api/Cards/get-graphical-cards/{sectionId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
+    "Method": "GetSectionTextualCards",
+    "RelativePath": "api/Cards/get-textual-cards/{sectionId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.SectionsController",
+    "Method": "GetSections",
+    "RelativePath": "api/Sections",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": [
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.SectionsController",
+    "Method": "AddSection",
+    "RelativePath": "api/Sections",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[corona_server_side_asp.net.WeatherForecast, corona-server-side-asp.net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
+        "Name": "section",
+        "Type": "corona_server_side_asp.net.Models.SectionModel",
+        "IsRequired": true
       }
     ],
-    "EndpointName": "GetWeatherForecast"
+    "ReturnTypes": []
   }
 ]

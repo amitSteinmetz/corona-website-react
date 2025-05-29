@@ -1,4 +1,10 @@
 
+using corona_server_side_asp.net.Data;
+using corona_server_side_asp.net.IRepositories;
+using corona_server_side_asp.net.Models.Cards;
+using corona_server_side_asp.net.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 namespace corona_server_side_asp.net
 {
     public class Program
@@ -8,11 +14,28 @@ namespace corona_server_side_asp.net
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContext<CoronaDataContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("coronaDB")));
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddNewtonsoftJson(opt =>
+            opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+
+            );
+
+            builder.Services.AddTransient<ICardsRepository, CardsRepository>();
+            builder.Services.AddTransient<ISectionsRepository, SectionsRepository>();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",
+                    policy => policy.WithOrigins("http://localhost:3000")
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader());
+            });
 
             var app = builder.Build();
 
@@ -22,6 +45,8 @@ namespace corona_server_side_asp.net
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors("AllowReactApp");
 
             app.UseHttpsRedirection();
 
