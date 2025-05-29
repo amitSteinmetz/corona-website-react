@@ -12,8 +12,8 @@ using corona_server_side_asp.net.Data;
 namespace corona_server_side_asp.net.Migrations
 {
     [DbContext(typeof(CoronaDataContext))]
-    [Migration("20250529083945_ef-inhritance-testing1")]
-    partial class efinhritancetesting1
+    [Migration("20250529104846_ef-inhritance-testing3")]
+    partial class efinhritancetesting3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
