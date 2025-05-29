@@ -36,15 +36,6 @@ const Header = () => {
     });
   }
 
-  useEffect(() => {
-    fetch("https://localhost:7287/api/Sections")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => console.error("Error:", err));
-  }, []);
-
   return (
     <div className="header-container">
       <div

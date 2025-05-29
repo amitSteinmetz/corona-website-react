@@ -1,9 +1,9 @@
-import { useEffect } from "react";
 import CardRenderer from "./cards/CardRenderer";
 import { SectionModel } from "../../models/section.model";
 import { GoTriangleDown } from "react-icons/go";
 
 const Section = ({ sectionData }: { sectionData: SectionModel }) => {
+
   return (
     <div className="section-container">
       <div className="section-container__header">

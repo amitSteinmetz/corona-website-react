@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import Header from "./Header";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import Section from "./Section";
 import { DataContext } from "../../contexts/DataContext";
@@ -9,6 +9,10 @@ import { sideNavArrowBtn } from "../../assets/svgs";
 function AppRouter() {
   const { theme } = useContext(ThemeContext);
   const { sections } = useContext(DataContext);
+
+  useEffect(() => {
+    console.log(sections);
+  }, [sections]);
 
   return (
     <BrowserRouter>
@@ -38,10 +42,12 @@ function AppRouter() {
               </div>
             </div>
 
-            {sections.map(
-              (sectionData, index) => (
-                <Section key={index} sectionData={sectionData}></Section>
-              )
+            {sections ? (
+              sections.map((sectionData, index) => (
+                <Section key={index} sectionData={sectionData} />
+              ))
+            ) : (
+              <div>Loading...</div>
             )}
           </div>
         </div>

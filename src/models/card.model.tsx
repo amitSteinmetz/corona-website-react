@@ -1,19 +1,25 @@
-export interface BaseCard {
+export interface CardModel {
+  id: number;
   title: string;
-  type: string;
+  type: string; // this will act as the "discriminator"
 }
 
-export interface TextualCard extends BaseCard {
-  mainData: Array<{ amount: string; text?: string }>;
-  additionalData?: Array<{ amount: string; text: string }>;
+export interface TextualCardModel extends CardModel {
+  data: CardTextDataModel[];
 }
 
-export interface GraphicalCard extends BaseCard {
-  option;
+export interface GraphicalCardModel extends CardModel {
+  options: string;
 }
 
-export interface ContainerCard extends BaseCard {
-  children: CardModel[];
+export interface ContainerCardModel extends CardModel {
+  // children: CardModel[];
+  amountOfChilds: number;
 }
 
-export type CardModel = TextualCard | GraphicalCard | ContainerCard;
+export interface CardTextDataModel {
+  amount: string;
+  text: string;
+}
+
+export type Card = TextualCardModel | GraphicalCardModel | ContainerCardModel;
