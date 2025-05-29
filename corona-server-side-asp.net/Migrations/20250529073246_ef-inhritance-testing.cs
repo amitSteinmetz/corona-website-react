@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace corona_server_side_asp.net.Migrations
 {
     /// <inheritdoc />
-    public partial class testing : Migration
+    public partial class efinhritancetesting : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,16 +51,17 @@ namespace corona_server_side_asp.net.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Fruits",
+                name: "Sections",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RelatedLinks = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Fruits", x => x.Id);
+                    table.PrimaryKey("PK_Sections", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,6 +170,49 @@ namespace corona_server_side_asp.net.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Cards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    SectionModelId = table.Column<int>(type: "int", nullable: true),
+                    AmountOfChilds = table.Column<int>(type: "int", nullable: true),
+                    Options = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cards_Sections_SectionModelId",
+                        column: x => x.SectionModelId,
+                        principalTable: "Sections",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CardTextDataModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Amount = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TextualCardModelId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CardTextDataModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CardTextDataModel_Cards_TextualCardModelId",
+                        column: x => x.TextualCardModelId,
+                        principalTable: "Cards",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -207,6 +251,16 @@ namespace corona_server_side_asp.net.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cards_SectionModelId",
+                table: "Cards",
+                column: "SectionModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CardTextDataModel_TextualCardModelId",
+                table: "CardTextDataModel",
+                column: "TextualCardModelId");
         }
 
         /// <inheritdoc />
@@ -228,13 +282,19 @@ namespace corona_server_side_asp.net.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Fruits");
+                name: "CardTextDataModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Cards");
+
+            migrationBuilder.DropTable(
+                name: "Sections");
         }
     }
 }

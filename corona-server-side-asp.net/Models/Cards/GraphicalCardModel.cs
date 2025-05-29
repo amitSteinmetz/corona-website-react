@@ -2,7 +2,7 @@
 {
     public class GraphicalCardModel : CardModel
     {
-        public int Id { get; set; }
+       
         public string Options { get; set; }
     }
 }

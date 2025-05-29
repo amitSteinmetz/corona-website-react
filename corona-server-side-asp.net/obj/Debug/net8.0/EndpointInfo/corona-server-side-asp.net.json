@@ -5,7 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/Cards/add-textual-card/{sectionId}": {
+    "/api/Cards/{sectionId}": {
       "post": {
         "tags": [
           "Cards"
@@ -25,22 +25,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/TextualCardModel"
+                "$ref": "#/components/schemas/CardModel"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TextualCardModel"
+                "$ref": "#/components/schemas/CardModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TextualCardModel"
+                "$ref": "#/components/schemas/CardModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TextualCardModel"
+                "$ref": "#/components/schemas/CardModel"
               }
             }
           }
@@ -50,149 +50,7 @@
             "description": "OK"
           }
         }
-      }
-    },
-    "/api/Cards/add-graphical-card/{sectionId}": {
-      "post": {
-        "tags": [
-          "Cards"
-        ],
-        "parameters": [
-          {
-            "name": "sectionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/GraphicalCardModel"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GraphicalCardModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GraphicalCardModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/GraphicalCardModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Cards/add-container-card/{sectionId}": {
-      "post": {
-        "tags": [
-          "Cards"
-        ],
-        "parameters": [
-          {
-            "name": "sectionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContainerCardModel"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContainerCardModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContainerCardModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContainerCardModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Cards/get-textual-cards/{sectionId}": {
-      "get": {
-        "tags": [
-          "Cards"
-        ],
-        "parameters": [
-          {
-            "name": "sectionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Cards/get-graphical-cards/{sectionId}": {
-      "get": {
-        "tags": [
-          "Cards"
-        ],
-        "parameters": [
-          {
-            "name": "sectionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Cards/get-container-cards/{sectionId}": {
+      },
       "get": {
         "tags": [
           "Cards"
@@ -264,86 +122,18 @@
   },
   "components": {
     "schemas": {
-      "CardTextDataModel": {
+      "CardModel": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int32"
           },
-          "amount": {
-            "type": "string",
-            "nullable": true
-          },
-          "text": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CardType": {
-        "enum": [
-          1,
-          2,
-          3
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "ContainerCardModel": {
-        "type": "object",
-        "properties": {
           "title": {
             "type": "string",
             "nullable": true
           },
           "type": {
-            "$ref": "#/components/schemas/CardType"
-          },
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "innerTextualCards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TextualCardModel"
-            },
-            "nullable": true
-          },
-          "innerGraphicalCards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GraphicalCardModel"
-            },
-            "nullable": true
-          },
-          "innerContainerCards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ContainerCardModel"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "GraphicalCardModel": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "type": {
-            "$ref": "#/components/schemas/CardType"
-          },
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "options": {
             "type": "string",
             "nullable": true
           }
@@ -368,48 +158,10 @@
             },
             "nullable": true
           },
-          "textualCards": {
+          "cards": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TextualCardModel"
-            },
-            "nullable": true
-          },
-          "graphicalCards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GraphicalCardModel"
-            },
-            "nullable": true
-          },
-          "containerCards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ContainerCardModel"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "TextualCardModel": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "type": {
-            "$ref": "#/components/schemas/CardType"
-          },
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CardTextDataModel"
+              "$ref": "#/components/schemas/CardModel"
             },
             "nullable": true
           }

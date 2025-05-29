@@ -6,9 +6,7 @@ namespace corona_server_side_asp.net.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public List<string>? RelatedLinks { get; set; }
-        public List<TextualCardModel>? TextualCards { get; set; }
-        public List<GraphicalCardModel>? GraphicalCards { get; set; }
-        public List<ContainerCardModel>? ContainerCards { get; set; }
+        public List<string> RelatedLinks { get; set; } = new();
+        public List<CardModel> Cards { get; set; } = new();
     }
 }

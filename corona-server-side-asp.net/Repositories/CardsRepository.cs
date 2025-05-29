@@ -15,90 +15,32 @@ namespace corona_server_side_asp.net.Repositories
             _context = context;
         }
 
-        public async Task<int> AddTextualCardToSectionAsync(int sectionId, TextualCardModel card)
+        public async Task<List<CardModel>> GetSectionCardsAsync(int sectionId)
         {
+            if (sectionId <= 0) return null;
 
             var section = await _context.Sections
-                .Include(s => s.TextualCards)
+                .Include(s => s.Cards)
+                .FirstOrDefaultAsync(s => s.Id == sectionId);
+
+            if (section == null) return null;
+
+            return section.Cards;
+        }
+
+        public async Task<int> AddCardToSectionAsync(int sectionId, CardModel card)
+        {
+            if (card == null || sectionId <= 0) return -1;
+
+            var section = await _context.Sections
+                .Include(s => s.Cards)
                 .FirstOrDefaultAsync(s => s.Id == sectionId);
 
             if (section == null) return -1;
 
-            if (section.TextualCards == null)
-                section.TextualCards = new List<TextualCardModel>();
-
-            section.TextualCards.Add(card);
-
-            return await _context.SaveChangesAsync();
+            section.Cards.Add(card);      
+            return await _context.SaveChangesAsync();   
         }
-
-        public async Task<int> AddGraphicalCardToSectionAsync(int sectionId, GraphicalCardModel card)
-        {
-
-            var section = await _context.Sections
-                .Include(s => s.GraphicalCards)
-                .FirstOrDefaultAsync(s => s.Id == sectionId);
-
-            if (section == null) return -1;
-
-            if (section.GraphicalCards == null)
-                section.GraphicalCards = new List<GraphicalCardModel>();
-
-            section.GraphicalCards.Add(card);
-
-            return await _context.SaveChangesAsync();
-        }
-
-        public async Task<int> AddContainerCardToSectionAsync(int sectionId, ContainerCardModel card)
-        {
-
-            var section = await _context.Sections
-                .Include(s => s.ContainerCards)
-                .FirstOrDefaultAsync(s => s.Id == sectionId);
-
-            if (section == null) return -1;
-
-            if (section.ContainerCards == null)
-                section.ContainerCards = new List<ContainerCardModel>();
-
-            section.ContainerCards.Add(card);
-
-            return await _context.SaveChangesAsync();
-        }
-
-        public async Task<List<TextualCardModel>> GetSectionTextualCardsAsync(int sectionId)
-        {
-            var section = await _context.Sections
-                .Include(s => s.TextualCards)
-                .FirstOrDefaultAsync(s => s.Id == sectionId);
-
-            if (section == null || section.TextualCards == null) return null;
-
-            return section.TextualCards.ToList();
-        }
-
-        public async Task<List<GraphicalCardModel>> GetSectionGraphicalCardsAsync(int sectionId)
-        {
-            var section = await _context.Sections
-                .Include(s => s.GraphicalCards)
-                .FirstOrDefaultAsync(s => s.Id == sectionId);
-
-            if (section == null || section.GraphicalCards == null) return null;
-
-            return section.GraphicalCards.ToList();
-        }
-
-        public async Task<List<ContainerCardModel>> GetSectionContainerCardsAsync(int sectionId)
-        {
-            var section = await _context.Sections
-                .Include(s => s.ContainerCards)
-                .FirstOrDefaultAsync(s => s.Id == sectionId);
-
-            if (section == null || section.ContainerCards == null) return null;
-
-            return section.ContainerCards.ToList();
-        }
-
     }
 }
 

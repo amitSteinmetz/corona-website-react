@@ -1,9 +1,12 @@
 
 using corona_server_side_asp.net.Data;
+using corona_server_side_asp.net.Helpers;
 using corona_server_side_asp.net.IRepositories;
 using corona_server_side_asp.net.Models.Cards;
 using corona_server_side_asp.net.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace corona_server_side_asp.net
 {
@@ -18,11 +21,14 @@ namespace corona_server_side_asp.net
                 options.UseSqlServer(builder.Configuration.GetConnectionString("coronaDB")));
 
             builder.Services.AddControllers().AddNewtonsoftJson(opt =>
-            opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            {
+                opt.SerializerSettings.TypeNameHandling = TypeNameHandling.None;
+                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+        
 
-            );
 
-            builder.Services.AddTransient<ICardsRepository, CardsRepository>();
+        builder.Services.AddTransient<ICardsRepository, CardsRepository>();
             builder.Services.AddTransient<ISectionsRepository, SectionsRepository>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

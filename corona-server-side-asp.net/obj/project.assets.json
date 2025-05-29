@@ -60,6 +60,18 @@
           }
         }
       },
+      "JsonSubTypes/2.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/JsonSubTypes.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/JsonSubTypes.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.10": {
         "type": "package",
         "dependencies": {
@@ -1866,6 +1878,26 @@
         "lib/netstandard2.0/Humanizer.dll",
         "lib/netstandard2.0/Humanizer.xml",
         "logo.png"
+      ]
+    },
+    "JsonSubTypes/2.0.1": {
+      "sha512": "1Po+Ypf0SjCeEKx5+C89Nb5OgTcqNvfS3uTI46MUM+KEp6Rq/M0h+vVsTUt/6DFRwZMTpsAJM4yJrZmEObVANA==",
+      "type": "package",
+      "path": "jsonsubtypes/2.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "jsonsubtypes.2.0.1.nupkg.sha512",
+        "jsonsubtypes.nuspec",
+        "lib/net35/JsonSubTypes.dll",
+        "lib/net40/JsonSubTypes.dll",
+        "lib/net45/JsonSubTypes.dll",
+        "lib/net46/JsonSubTypes.dll",
+        "lib/net47/JsonSubTypes.dll",
+        "lib/netstandard1.3/JsonSubTypes.dll",
+        "lib/netstandard2.0/JsonSubTypes.dll"
       ]
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.10": {
@@ -5273,6 +5305,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "JsonSubTypes >= 2.0.1",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.10",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.10",
       "Microsoft.AspNetCore.JsonPatch >= 9.0.5",
@@ -5333,6 +5366,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "JsonSubTypes": {
+            "target": "Package",
+            "version": "[2.0.1, )"
+          },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
             "version": "[8.0.10, )"

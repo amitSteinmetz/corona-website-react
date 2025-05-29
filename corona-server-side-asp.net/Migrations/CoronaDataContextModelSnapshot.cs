@@ -220,6 +220,41 @@ namespace corona_server_side_asp.net.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.CardModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
+                    b.Property<int?>("SectionModelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SectionModelId");
+
+                    b.ToTable("Cards");
+
+                    b.HasDiscriminator().HasValue("CardModel");
+
+                    b.UseTphMappingStrategy();
+                });
+
             modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.CardTextDataModel", b =>
                 {
                     b.Property<int>("Id")
@@ -245,100 +280,6 @@ namespace corona_server_side_asp.net.Migrations
                     b.ToTable("CardTextDataModel");
                 });
 
-            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.ContainerCardModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ContainerCardModelId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SectionModelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContainerCardModelId");
-
-                    b.HasIndex("SectionModelId");
-
-                    b.ToTable("ContainerCardModel");
-                });
-
-            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.GraphicalCardModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ContainerCardModelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Options")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SectionModelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContainerCardModelId");
-
-                    b.HasIndex("SectionModelId");
-
-                    b.ToTable("GraphicalCardModel");
-                });
-
-            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.TextualCardModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ContainerCardModelId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SectionModelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContainerCardModelId");
-
-                    b.HasIndex("SectionModelId");
-
-                    b.ToTable("TextualCardModel");
-                });
-
             modelBuilder.Entity("corona_server_side_asp.net.Models.SectionModel", b =>
                 {
                     b.Property<int>("Id")
@@ -348,6 +289,7 @@ namespace corona_server_side_asp.net.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.PrimitiveCollection<string>("RelatedLinks")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -357,6 +299,34 @@ namespace corona_server_side_asp.net.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sections");
+                });
+
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.ContainerCardModel", b =>
+                {
+                    b.HasBaseType("corona_server_side_asp.net.Models.Cards.CardModel");
+
+                    b.Property<int>("AmountOfChilds")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("ContainerCardModel");
+                });
+
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.GraphicalCardModel", b =>
+                {
+                    b.HasBaseType("corona_server_side_asp.net.Models.Cards.CardModel");
+
+                    b.Property<string>("Options")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("GraphicalCardModel");
+                });
+
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.TextualCardModel", b =>
+                {
+                    b.HasBaseType("corona_server_side_asp.net.Models.Cards.CardModel");
+
+                    b.HasDiscriminator().HasValue("TextualCardModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -410,6 +380,13 @@ namespace corona_server_side_asp.net.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.CardModel", b =>
+                {
+                    b.HasOne("corona_server_side_asp.net.Models.SectionModel", null)
+                        .WithMany("Cards")
+                        .HasForeignKey("SectionModelId");
+                });
+
             modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.CardTextDataModel", b =>
                 {
                     b.HasOne("corona_server_side_asp.net.Models.Cards.TextualCardModel", null)
@@ -417,60 +394,14 @@ namespace corona_server_side_asp.net.Migrations
                         .HasForeignKey("TextualCardModelId");
                 });
 
-            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.ContainerCardModel", b =>
+            modelBuilder.Entity("corona_server_side_asp.net.Models.SectionModel", b =>
                 {
-                    b.HasOne("corona_server_side_asp.net.Models.Cards.ContainerCardModel", null)
-                        .WithMany("InnerContainerCards")
-                        .HasForeignKey("ContainerCardModelId");
-
-                    b.HasOne("corona_server_side_asp.net.Models.SectionModel", null)
-                        .WithMany("ContainerCards")
-                        .HasForeignKey("SectionModelId");
-                });
-
-            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.GraphicalCardModel", b =>
-                {
-                    b.HasOne("corona_server_side_asp.net.Models.Cards.ContainerCardModel", null)
-                        .WithMany("InnerGraphicalCards")
-                        .HasForeignKey("ContainerCardModelId");
-
-                    b.HasOne("corona_server_side_asp.net.Models.SectionModel", null)
-                        .WithMany("GraphicalCards")
-                        .HasForeignKey("SectionModelId");
-                });
-
-            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.TextualCardModel", b =>
-                {
-                    b.HasOne("corona_server_side_asp.net.Models.Cards.ContainerCardModel", null)
-                        .WithMany("InnerTextualCards")
-                        .HasForeignKey("ContainerCardModelId");
-
-                    b.HasOne("corona_server_side_asp.net.Models.SectionModel", null)
-                        .WithMany("TextualCards")
-                        .HasForeignKey("SectionModelId");
-                });
-
-            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.ContainerCardModel", b =>
-                {
-                    b.Navigation("InnerContainerCards");
-
-                    b.Navigation("InnerGraphicalCards");
-
-                    b.Navigation("InnerTextualCards");
+                    b.Navigation("Cards");
                 });
 
             modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.TextualCardModel", b =>
                 {
                     b.Navigation("Data");
-                });
-
-            modelBuilder.Entity("corona_server_side_asp.net.Models.SectionModel", b =>
-                {
-                    b.Navigation("ContainerCards");
-
-                    b.Navigation("GraphicalCards");
-
-                    b.Navigation("TextualCards");
                 });
 #pragma warning restore 612, 618
         }

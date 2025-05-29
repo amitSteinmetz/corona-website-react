@@ -17,51 +17,19 @@ namespace corona_server_side_asp.net.Controllers
             _cardsRepository = cardsRepository;
         }
 
-        [HttpPost("add-textual-card/{sectionId}")]
-        public async Task<IActionResult> AddTextualCardToSection(int sectionId, [FromBody] TextualCardModel card)
+        [HttpPost("{sectionId}")]
+        public async Task<IActionResult> AddCardToSection(int sectionId, [FromBody] CardModel card)
         {
 
-            var result = await _cardsRepository.AddTextualCardToSectionAsync(sectionId, card);
+            var result = await _cardsRepository.AddCardToSectionAsync(sectionId, card);
 
             return (result != -1) ? Ok("Card added successfully.") : NotFound("Section not found.");
         }
 
-        [HttpPost("add-graphical-card/{sectionId}")]
-        public async Task<IActionResult> AddGraphicalCardToSection(int sectionId, [FromBody] GraphicalCardModel card)
+        [HttpGet("{sectionId}")]
+        public async Task<IActionResult> GetSectionCards(int sectionId)
         {
-
-            var result = await _cardsRepository.AddGraphicalCardToSectionAsync(sectionId, card);
-
-            return (result != -1) ? Ok("Card added successfully.") : NotFound("Section not found.");
-        }
-
-        [HttpPost("add-container-card/{sectionId}")]
-        public async Task<IActionResult> AddContainerCardToSection(int sectionId, [FromBody] ContainerCardModel card)
-        {
-
-            var result = await _cardsRepository.AddContainerCardToSectionAsync(sectionId, card);
-
-            return (result != -1) ? Ok("Card added successfully.") : NotFound("Section not found.");
-        }
-
-        [HttpGet("get-textual-cards/{sectionId}")]
-        public async Task<IActionResult> GetSectionTextualCards(int sectionId)
-        {
-            var cards = await _cardsRepository.GetSectionTextualCardsAsync(sectionId);
-            return (cards != null) ? Ok(cards) : NotFound("No cards here");
-        }
-
-        [HttpGet("get-graphical-cards/{sectionId}")]
-        public async Task<IActionResult> GetSectionGraphicalCards(int sectionId)
-        {
-            var cards = await _cardsRepository.GetSectionGraphicalCardsAsync(sectionId);
-            return (cards != null) ? Ok(cards) : NotFound("No cards here");
-        }
-
-        [HttpGet("get-container-cards/{sectionId}")]
-        public async Task<IActionResult> GetSectionContainerCards(int sectionId)
-        {
-            var cards = await _cardsRepository.GetSectionContainerCardsAsync(sectionId);
+            var cards = await _cardsRepository.GetSectionCardsAsync(sectionId);
             return (cards != null) ? Ok(cards) : NotFound("No cards here");
         }
     }

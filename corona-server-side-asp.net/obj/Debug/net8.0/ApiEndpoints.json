@@ -1,8 +1,8 @@
 [
   {
     "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
-    "Method": "AddContainerCardToSection",
-    "RelativePath": "api/Cards/add-container-card/{sectionId}",
+    "Method": "AddCardToSection",
+    "RelativePath": "api/Cards/{sectionId}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -14,7 +14,7 @@
       },
       {
         "Name": "card",
-        "Type": "corona_server_side_asp.net.Models.Cards.ContainerCardModel",
+        "Type": "corona_server_side_asp.net.Models.Cards.CardModel",
         "IsRequired": true
       }
     ],
@@ -22,82 +22,8 @@
   },
   {
     "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
-    "Method": "AddGraphicalCardToSection",
-    "RelativePath": "api/Cards/add-graphical-card/{sectionId}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "sectionId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "card",
-        "Type": "corona_server_side_asp.net.Models.Cards.GraphicalCardModel",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
-    "Method": "AddTextualCardToSection",
-    "RelativePath": "api/Cards/add-textual-card/{sectionId}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "sectionId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "card",
-        "Type": "corona_server_side_asp.net.Models.Cards.TextualCardModel",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
-    "Method": "GetSectionContainerCards",
-    "RelativePath": "api/Cards/get-container-cards/{sectionId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "sectionId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
-    "Method": "GetSectionGraphicalCards",
-    "RelativePath": "api/Cards/get-graphical-cards/{sectionId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "sectionId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
-    "Method": "GetSectionTextualCards",
-    "RelativePath": "api/Cards/get-textual-cards/{sectionId}",
+    "Method": "GetSectionCards",
+    "RelativePath": "api/Cards/{sectionId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
