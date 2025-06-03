@@ -1,12 +1,9 @@
 import TextualCard from "./TextualCard";
 import GraphicalCard from "./GraphicalCard";
-import { useEffect } from "react";
-import { GraphicalCardModel } from "../../../models/card.model";
 
 const CardRenderer = ({ card }) => {
   function isCardHasChildren() {
-    // return card.children && card.children.length > 0;
-    return false;
+    return card.type === "container";
   }
 
   function renderCard() {
@@ -20,9 +17,7 @@ const CardRenderer = ({ card }) => {
 
   return (
     <>
-      {renderCard()}
-
-      {/* {isCardHasChildren() ? (
+      {isCardHasChildren() ? (
         <div className="parent-card">
           <div className="parent-card__title">{card.title}</div>
 
@@ -34,7 +29,7 @@ const CardRenderer = ({ card }) => {
         </div>
       ) : (
         renderCard()
-      )} */}
+      )}
     </>
   );
 };
