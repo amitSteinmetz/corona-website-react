@@ -7,6 +7,7 @@ using corona_server_side_asp.net.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 
 namespace corona_server_side_asp.net
 {
@@ -15,6 +16,8 @@ namespace corona_server_side_asp.net
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            ExcelPackage.License.SetNonCommercialPersonal("Amit Steinmetz");
 
             // Add services to the container.
             builder.Services.AddDbContext<CoronaDataContext>(options =>
@@ -25,10 +28,8 @@ namespace corona_server_side_asp.net
                 opt.SerializerSettings.TypeNameHandling = TypeNameHandling.None;
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
-        
 
-
-        builder.Services.AddTransient<ICardsRepository, CardsRepository>();
+            builder.Services.AddTransient<ICardsRepository, CardsRepository>();
             builder.Services.AddTransient<ISectionsRepository, SectionsRepository>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -57,7 +58,6 @@ namespace corona_server_side_asp.net
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

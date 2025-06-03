@@ -37,6 +37,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
+    "Method": "AddChildToContainerCard",
+    "RelativePath": "api/Cards/{sectionId}/{containerCardId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "containerCardId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "card",
+        "Type": "corona_server_side_asp.net.Models.Cards.CardModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "corona_server_side_asp.net.Controllers.SectionsController",
     "Method": "GetSections",
     "RelativePath": "api/Sections",

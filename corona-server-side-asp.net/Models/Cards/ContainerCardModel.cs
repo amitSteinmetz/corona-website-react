@@ -2,6 +2,6 @@
 {
     public class ContainerCardModel : CardModel
     {
-        public int AmountOfChilds { get; set; } // for testing
+        public List<CardModel> Children { get; set; } = new();
     }
 }

@@ -228,10 +228,17 @@ namespace corona_server_side_asp.net.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("ContainerCardModelId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(21)
                         .HasColumnType("nvarchar(21)");
+
+                    b.Property<string>("ExcelFileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SectionModelId")
                         .HasColumnType("int");
@@ -245,6 +252,8 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ContainerCardModelId");
 
                     b.HasIndex("SectionModelId");
 
@@ -304,9 +313,6 @@ namespace corona_server_side_asp.net.Migrations
             modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.ContainerCardModel", b =>
                 {
                     b.HasBaseType("corona_server_side_asp.net.Models.Cards.CardModel");
-
-                    b.Property<int>("AmountOfChilds")
-                        .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("ContainerCardModel");
                 });
@@ -382,6 +388,10 @@ namespace corona_server_side_asp.net.Migrations
 
             modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.CardModel", b =>
                 {
+                    b.HasOne("corona_server_side_asp.net.Models.Cards.ContainerCardModel", null)
+                        .WithMany("Children")
+                        .HasForeignKey("ContainerCardModelId");
+
                     b.HasOne("corona_server_side_asp.net.Models.SectionModel", null)
                         .WithMany("Cards")
                         .HasForeignKey("SectionModelId");
@@ -397,6 +407,11 @@ namespace corona_server_side_asp.net.Migrations
             modelBuilder.Entity("corona_server_side_asp.net.Models.SectionModel", b =>
                 {
                     b.Navigation("Cards");
+                });
+
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.ContainerCardModel", b =>
+                {
+                    b.Navigation("Children");
                 });
 
             modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.TextualCardModel", b =>
