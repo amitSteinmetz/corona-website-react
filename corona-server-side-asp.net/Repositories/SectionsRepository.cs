@@ -80,7 +80,29 @@ namespace corona_server_side_asp.net.Repositories
 
                 else if (card is GraphicalCardModel graphicalCard)
                 {
+                    var optionsNode = JsonNode.Parse(graphicalCard.Options);
+                    if (optionsNode != null) // Ensure optionsNode is not null
+                    {
+                        var keys = parsedData.Select(d => d.TryGetValue("key", out var k) ? k : "").ToList();
+                        var values = parsedData.Select(d => d.TryGetValue("value", out var v) ? v : "").ToList();
 
+                        // Set xAxis.data
+                        var xAxis = optionsNode["xAxis"];
+                        if (xAxis != null && xAxis["data"] != null)
+                        {
+                            xAxis["data"] = JsonSerializer.SerializeToNode(keys);
+                        }
+
+                        // Set series[0].data
+                        var series = optionsNode["series"] as JsonArray;
+                        if (series != null && series.Count > 0 && series[0]?["data"] != null)
+                        {
+                            series[0]["data"] = JsonSerializer.SerializeToNode(values);
+                        }
+
+                        // Save the modified options back to the model
+                        graphicalCard.Options = optionsNode.ToJsonString(new JsonSerializerOptions { WriteIndented = false });
+                    }
                 }
             }
             else if (card is ContainerCardModel containerCard && containerCard.Children != null)

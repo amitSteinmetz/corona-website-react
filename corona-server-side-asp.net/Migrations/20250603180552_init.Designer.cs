@@ -12,8 +12,8 @@ using corona_server_side_asp.net.Data;
 namespace corona_server_side_asp.net.Migrations
 {
     [DbContext(typeof(CoronaDataContext))]
-    [Migration("20250603113205_change-caontainer-card")]
-    partial class changecaontainercard
+    [Migration("20250603180552_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
