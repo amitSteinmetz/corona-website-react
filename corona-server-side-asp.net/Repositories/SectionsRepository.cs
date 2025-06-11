@@ -1,6 +1,7 @@
 ﻿using corona_server_side_asp.net.Data;
 using corona_server_side_asp.net.Helpers;
 using corona_server_side_asp.net.IRepositories;
+using corona_server_side_asp.net.Repositories;
 using corona_server_side_asp.net.Models;
 using corona_server_side_asp.net.Models.Cards;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +14,12 @@ namespace corona_server_side_asp.net.Repositories
     public class SectionsRepository : ISectionsRepository
     {
         private readonly CoronaDataContext _context;
-        private readonly IWebHostEnvironment _env;
+        private readonly ICardsRepository _cardsRepository;
 
-
-        public SectionsRepository(CoronaDataContext context, IWebHostEnvironment env)
+        public SectionsRepository(CoronaDataContext context, ICardsRepository cardsRepository)
         {
             _context = context;
-            _env = env;
+            _cardsRepository = cardsRepository;
         }
 
         public async Task<List<SectionModel>> GetSectionsAsync()
@@ -30,7 +30,7 @@ namespace corona_server_side_asp.net.Repositories
                 .Include(s => s.Cards)
                 .ToListAsync();
 
-            WriteExcelDataToCards(ref sections);
+            _cardsRepository.WriteExcelDataToCards(ref sections);
 
             return sections;
         }
@@ -42,6 +42,7 @@ namespace corona_server_side_asp.net.Repositories
             _context.Sections.Add(section);
             return await _context.SaveChangesAsync();
         }
+
         private async Task PreloadCardTypes()
         {
             await _context.Set<TextualCardModel>().Include(tc => tc.Data).LoadAsync();
@@ -49,69 +50,6 @@ namespace corona_server_side_asp.net.Repositories
             await _context.Set<GraphicalCardModel>().LoadAsync();
         }
 
-        private void WriteExcelDataToCards(ref List<SectionModel> sections)
-        {
-            foreach (var section in sections)
-            {
-                foreach (var card in section.Cards)
-                {
-                    WriteExcelDataToCard(card, section.Title);
-                }
-            }
-        }
-
-        private void WriteExcelDataToCard(CardModel card, string sectionTitle)
-        {
-            if (!(card is ContainerCardModel))
-            {
-                var excelPath = Path.Combine(_env.ContentRootPath, "Excels", "Sections", sectionTitle, card.ExcelFileName);
-                var parsedData = ExcelDataParser.Parse(excelPath);
-
-                if (card is TextualCardModel textualCard)
-                {
-                    textualCard.Data = parsedData
-                    .Select(d => new CardTextDataModel
-                    {
-                        Text = d.TryGetValue("key", out string? text) ? text : "",
-                        Amount = d.TryGetValue("value", out string? amount) ? amount : "",
-                    })
-                    .ToList();
-                }
-
-                else if (card is GraphicalCardModel graphicalCard)
-                {
-                    var optionsNode = JsonNode.Parse(graphicalCard.Options);
-                    if (optionsNode != null) // Ensure optionsNode is not null
-                    {
-                        var keys = parsedData.Select(d => d.TryGetValue("key", out var k) ? k : "").ToList();
-                        var values = parsedData.Select(d => d.TryGetValue("value", out var v) ? v : "").ToList();
-
-                        // Set xAxis.data
-                        var xAxis = optionsNode["xAxis"];
-                        if (xAxis != null && xAxis["data"] != null)
-                        {
-                            xAxis["data"] = JsonSerializer.SerializeToNode(keys);
-                        }
-
-                        // Set series[0].data
-                        var series = optionsNode["series"] as JsonArray;
-                        if (series != null && series.Count > 0 && series[0]?["data"] != null)
-                        {
-                            series[0]["data"] = JsonSerializer.SerializeToNode(values);
-                        }
-
-                        // Save the modified options back to the model
-                        graphicalCard.Options = optionsNode.ToJsonString(new JsonSerializerOptions { WriteIndented = false });
-                    }
-                }
-            }
-            else if (card is ContainerCardModel containerCard && containerCard.Children != null)
-            {
-                foreach (var child in containerCard.Children)
-                {
-                    WriteExcelDataToCard(child, sectionTitle);
-                }
-            }
-        }
+       
     }
 }

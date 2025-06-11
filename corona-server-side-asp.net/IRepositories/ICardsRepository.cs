@@ -1,4 +1,5 @@
-﻿using corona_server_side_asp.net.Models.Cards;
+﻿using corona_server_side_asp.net.Models;
+using corona_server_side_asp.net.Models.Cards;
 
 namespace corona_server_side_asp.net.IRepositories
 {
@@ -8,5 +9,7 @@ namespace corona_server_side_asp.net.IRepositories
         Task<List<CardModel>> GetSectionCardsAsync(int sectionId);
         Task<int> AddChildToContainerCard(int sectionId, int containerCardId, CardModel card);
         Task<string> GetCardSectionTitle(int sectionId);
+        Task<CardModel> ChangeGraphDataSource(int sectionId, int cardId, string period);
+        void WriteExcelDataToCards(ref List<SectionModel> sections);
     }
 }

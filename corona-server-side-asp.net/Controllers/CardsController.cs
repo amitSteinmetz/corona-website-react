@@ -22,19 +22,13 @@ namespace corona_server_side_asp.net.Controllers
         [HttpPost("{sectionId}")]
         public async Task<IActionResult> AddCardToSection(int sectionId, [FromBody] CardModel card)
         {
-            // Edge cases check
-            if (sectionId <= 0 || card == null)
-            {
-                return BadRequest("Invalid section ID or card data.");
-            }
-
+            if (sectionId <= 0 || card == null) return BadRequest("Invalid section ID or card data.");
+            
             if (card.Type != "container")
             {
                 if (string.IsNullOrEmpty(card.ExcelFileName))
-                {
                     return BadRequest("Excel file name is required for non-container cards.");
-                }
-
+                
                 else
                 {
                     var sectionTitle = await GetSectionTitle(sectionId);
@@ -42,7 +36,7 @@ namespace corona_server_side_asp.net.Controllers
 
                     if (!System.IO.File.Exists(excelPath))
                     {
-                        return BadRequest($"Excel file '{card.ExcelFileName}' not found.");
+                        return BadRequest($"Excel file path '{excelPath}' not found.");
                     }
                 }
             }
@@ -70,6 +64,19 @@ namespace corona_server_side_asp.net.Controllers
             if (result == -1) return NotFound("Section or container card not found.");
 
             return Ok("Child card added successfully.");
+        }
+
+        [HttpPut("{sectionId}/{cardId}")]
+        public async Task<IActionResult> ChangeGraphDataSource(int sectionId, int cardId, [FromBody] string timeRange)
+        {
+            // Edge cases check
+            if (sectionId <= 0 || cardId <= 0 || string.IsNullOrEmpty(timeRange))
+            {
+                return BadRequest("Invalid section ID, card ID, or period.");
+            }
+
+            var updatedCard = await _cardsRepository.ChangeGraphDataSource(sectionId, cardId, timeRange);
+            return (updatedCard != null) ? Ok(updatedCard) : NotFound("Card not found.");
         }
 
         private async Task<string> GetSectionTitle(int sectionId)

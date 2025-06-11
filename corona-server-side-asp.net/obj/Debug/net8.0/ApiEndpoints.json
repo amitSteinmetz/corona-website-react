@@ -38,6 +38,32 @@
   },
   {
     "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
+    "Method": "ChangeGraphDataSource",
+    "RelativePath": "api/Cards/{sectionId}/{cardId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "cardId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "timeRange",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
     "Method": "AddChildToContainerCard",
     "RelativePath": "api/Cards/{sectionId}/{containerCardId}",
     "HttpMethod": "POST",
