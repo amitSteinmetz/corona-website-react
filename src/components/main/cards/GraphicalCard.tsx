@@ -2,182 +2,155 @@ import ReactECharts from "echarts-for-react";
 import { moreInfoBtn } from "../../../assets/svgs";
 import { FiMoreVertical } from "react-icons/fi";
 import { GraphicalCardModel } from "../../../models/card.model";
+import { createContext, useState, useEffect, useContext } from "react";
+import { DataContext } from "../../../contexts/DataContext";
 
-const GraphicalCard = ({ card }) => {
+const GraphicalCard = ({ sectionId, card }) => {
   const graphicalCard: GraphicalCardModel = card as GraphicalCardModel;
   // const options = JSON.parse(graphicalCard.options);
+  const { onChangeGraphDataTimeRange } = useContext(DataContext);
+  const timeRanges = {
+    lastMonth: "last-month",
+    last3Months: "last-3-months",
+    last6Months: "last-6-months",
+    lastYear: "last-year",
+    all: "all"
+  }
+
   // options.xAxis.axisLabel.formatter = (value, index) =>
   // index === 4 ? "" : value;
 
+  // function applyFormatter(value: any, index: number, graphTitle: string) {
+  //   if (graphTitle === "כמות משתמשים") return index === 4 ? "" : value;
+  // }
+  
   const options = {
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "line",
+        axis: "x"
+      },
+      backgroundColor: "#fff",
+      borderColor: "#ddd",
+      borderWidth: 1,
+      textStyle: {
+        fontFamily: "Arial",
+        fontSize: 12,
+        color: "#333",
+      },
+      extraCssText: "direction: rtl; text-align: right; padding: 10px;",
+    },
     legend: {
+      top: 40,
+      left: "right",
+      align: "right",
+      itemHeight: 10,
+      itemWidth: 10,
+      itemGap: 20,
       data: [
-        {
-          name: "16-19",
-          icon: "circle",
-        },
-        {
-          name: "12-15",
-          icon: "circle",
-        },
-        {
-          name: "5-11",
-          icon: "circle",
-        },
-        {
-          name: "0-4",
-          icon: "circle",
-        },
+        { name: "16-19", icon: "circle" },
+        { name: "12-15", icon: "circle" },
+        { name: "5-11", icon: "circle" },
+        { name: "0-4", icon: "circle" },
       ],
     },
     grid: {
-      left: 70,
+      left: 40,
       right: 20,
-      top: 60,
-      bottom: 40,
+      top: 80,
+      bottom: 50,
     },
     xAxis: {
       type: "category",
-      data: ["05.05", "08.05", "08.05", "11.05", "14.05", "17.05", "20.05"],
-      boundaryGap: false,
+      data: ["02.03", "01.05", "01.12", "02.07", "31.01", "01.06"],
       axisLine: {
-        lineStyle: {
-          color: "#e0e0e0", // same color as grid lines
-        },
+        lineStyle: { color: "#ccc" },
       },
       axisLabel: {
-        margin: 30,
-        align: "left",
-        rotate: 20,
-        fontSize: 10,
-        color: "black",
+        fontSize: 11,
+        fontFamily: "Arial",
+        color: "#555",
       },
     },
     yAxis: {
       type: "value",
-      name: "ממוצע מאומתים",
-      min: 0,
-      max: 0.5,
-      interval: 0.1,
-      nameLocation: "middle", // vertical middle
-      nameRotate: 90, // rotate vertically
-      offset: 10,
-      nameTextStyle: {
-        fontSize: 14,
-        fontWeight: 500,
-        fontFamily: "Open Sans",
-        align: "center",
-        padding: [0, 0, 30, 0], // shift it away from the axis if needed
+      axisLine: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+      splitLine: {
+        lineStyle: {
+          color: "#eee",
+        },
+      },
+      axisLabel: {
+        fontSize: 11,
+        fontFamily: "Arial",
+        color: "#555",
       },
     },
     series: [
       {
+        name: "7-19",
         type: "line",
-        step: "end",
-        name: "16-19",
-        data: [0.1, 0.2, 0.34, 0.36, 0.49, 0.47, 0.4],
+        data: [100, 500, 1000, 800, 200, 100],
+        smooth: true,
+        symbol: "circle",
+        symbolSize: 6,
+        itemStyle: {
+          color: "#A88FEF",
+        },
         lineStyle: {
-          color: "rgb(216, 0, 245)",
+          color: "#A88FEF",
           width: 2,
         },
-        symbol: "circle",
-        symbolSize: 1,
-        itemStyle: {
-          color: "rgb(216, 0, 245)",
-        },
-        emphasis: {
-          focus: "series",
-          scale: 8,
-        },
-        label: {
-          show: true,
-          position: "top",
-          fontSize: 14,
-          fontFamily: "Open Sans",
-          color: "#333",
-          padding: [0, 0, 0, 50],
-        },
       },
-
       {
-        type: "line",
-        step: "end",
         name: "12-15",
-        data: [0.4, 0.3, 0.34, 0.26, 0.19, 0.37, 0.2],
-        lineStyle: {
-          color: "rgb(0, 188, 245)",
-          width: 2,
-        },
+        type: "line",
+        data: [200, 600, 2000, 900, 150, 180],
+        smooth: true,
         symbol: "circle",
-        symbolSize: 1,
+        symbolSize: 6,
         itemStyle: {
-          color: "rgb(0, 188, 245)",
+          color: "#7AB9F5",
         },
-        emphasis: {
-          focus: "series",
-          scale: 8,
-        },
-        label: {
-          show: true,
-          position: "top",
-          fontSize: 14,
-          fontFamily: "Open Sans",
-          color: "#333",
-          padding: [0, 0, 0, 50],
+        lineStyle: {
+          color: "#7AB9F5",
+          width: 2,
         },
       },
       {
-        type: "line",
-        step: "end",
         name: "5-11",
-        data: [0.3, 0.23, 0.14, 0.46, 0.19, 0.27, 0.32],
-        lineStyle: {
-          color: "rgb(0, 245, 12)",
-          width: 2,
-        },
+        type: "line",
+        data: [300, 700, 3000, 1000, 220, 170],
+        smooth: true,
         symbol: "circle",
-        symbolSize: 1,
+        symbolSize: 6,
         itemStyle: {
-          color: "rgb(0, 245, 12)",
+          color: "#A6D92E",
         },
-        emphasis: {
-          focus: "series",
-          scale: 8,
-        },
-        label: {
-          show: true,
-          position: "top",
-          fontSize: 14,
-          fontFamily: "Open Sans",
-          color: "#333",
-          padding: [0, 0, 0, 50],
+        lineStyle: {
+          color: "#A6D92E",
+          width: 2,
         },
       },
       {
-        type: "line",
-        step: "end",
         name: "0-4",
-        data: [0.14, 0.28, 0.44, 0.16, 0.29, 0.27, 0.19],
-        lineStyle: {
-          color: "rgb(253, 249, 5)",
-          width: 2,
-        },
+        type: "line",
+        data: [400, 650, 10, 950, 210, 190],
+        smooth: true,
         symbol: "circle",
-        symbolSize: 1,
+        symbolSize: 6,
         itemStyle: {
-          color: "rgb(253, 249, 5)",
+          color: "#69D4E8",
         },
-        emphasis: {
-          focus: "series",
-          scale: 8,
-        },
-        label: {
-          show: true,
-          position: "top",
-          fontSize: 14,
-          fontFamily: "Open Sans",
-          color: "#333",
-          padding: [0, 0, 0, 50],
+        lineStyle: {
+          color: "#69D4E8",
+          width: 2,
         },
       },
     ],
@@ -187,6 +160,14 @@ const GraphicalCard = ({ card }) => {
     <div className="graph-container card">
       <div className="graph-container__header">
         <div className="header__title bold">{graphicalCard.title}</div>
+
+        <ul className="time-filter-table">
+          <li className="time-filter-table__item" onClick={ () => { onChangeGraphDataTimeRange(sectionId, card.id, timeRanges.lastMonth)}}>חודש אחרון</li>
+          <li className="time-filter-table__item" onClick={ () => { onChangeGraphDataTimeRange(sectionId, card.id, timeRanges.last3Months)}}>3 חודשים</li>
+          <li className="time-filter-table__item" onClick={ () => { onChangeGraphDataTimeRange(sectionId, card.id, timeRanges.last6Months)}}>6 חודשים</li>
+          <li className="time-filter-table__item" onClick={ () => { onChangeGraphDataTimeRange(sectionId, card.id, timeRanges.lastYear)}}>שנה</li>
+          <li className="time-filter-table__item" onClick={ () => { onChangeGraphDataTimeRange(sectionId, card.id, timeRanges.all)}}>עד עכשיו</li>
+        </ul>
 
         <img
           src={moreInfoBtn}

@@ -13,8 +13,7 @@ export interface GraphicalCardModel extends CardModel {
 }
 
 export interface ContainerCardModel extends CardModel {
-  // children: CardModel[];
-  amountOfChilds: number;
+  children: Card[];
 }
 
 export interface CardTextDataModel {

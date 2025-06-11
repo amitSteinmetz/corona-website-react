@@ -21,7 +21,7 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
 
       <div className="section-cards">
         {sectionData.cards.map((card, index: number) => (
-          <CardRenderer card={card} key={index}></CardRenderer>
+          <CardRenderer sectionId={sectionData.id} card={card} key={index}></CardRenderer>
         ))}
       </div>
     </div>

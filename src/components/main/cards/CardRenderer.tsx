@@ -1,7 +1,7 @@
 import TextualCard from "./TextualCard";
 import GraphicalCard from "./GraphicalCard";
 
-const CardRenderer = ({ card }) => {
+const CardRenderer = ({ sectionId, card }) => {
   function isCardHasChildren() {
     return card.type === "container";
   }
@@ -11,7 +11,7 @@ const CardRenderer = ({ card }) => {
       case "textual":
         return <TextualCard card={card} />;
       case "graphical":
-        return <GraphicalCard card={card} />;
+        return <GraphicalCard sectionId={sectionId} card={card} />;
     }
   }
 
@@ -23,7 +23,7 @@ const CardRenderer = ({ card }) => {
 
           <div className="parent-card__childern-container">
             {card.children.map((child, index: number) => (
-              <CardRenderer key={index} card={child} />
+              <CardRenderer sectionId={sectionId} key={index} card={child} />
             ))}
           </div>
         </div>
