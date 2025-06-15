@@ -1,9 +1,11 @@
-import { useEffect } from "react";
 import { moreInfoBtn } from "../../../assets/svgs";
 import { TextualCardModel } from "../../../models/card.model";
 
 const TextualCard = ({ card }) => {
   const textualCard: TextualCardModel = card as TextualCardModel;
+  const textualCardAdditionalData = textualCard?.data[0]?.text
+    ? textualCard.data
+    : textualCard.data.slice(1);
 
   return (
     <div className="card">
@@ -20,25 +22,13 @@ const TextualCard = ({ card }) => {
       </div>
 
       <div className="card__body">
-        {textualCard.data[0] && (
-          <div className="main-data-line">
-            <span className="main-data__text font-xs">
-              {textualCard.data[0].text}
-            </span>
-
-            <span
-              className={`main-data__amount bold line-height-xl ${
-                !textualCard.data[0].text
-                  ? "main-data-bigger-font"
-                  : "main-data-smaller-font"
-              }`}
-            >
-              {textualCard.data[0].amount}
-            </span>
-          </div>
+        {!textualCard.data[0].text && (
+          <span className="main-data__amount bold line-height-xl main-data-bigger-font">
+            {textualCard.data[0].amount}
+          </span>
         )}
 
-        {textualCard.data.slice(1).map((line, index: number) => (
+        {textualCardAdditionalData.map((line, index: number) => (
           <div className="additional-data-line" key={index}>
             <span className="additional-data__amount font-xs bold line-height-xl">
               {line.amount}
@@ -52,3 +42,6 @@ const TextualCard = ({ card }) => {
 };
 
 export default TextualCard;
+
+// take data[0] to be "main-data" if data[0].text is empty
+// else, take data[0] to be "additional-data"

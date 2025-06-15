@@ -17,11 +17,11 @@ const CardRenderer = ({ sectionId, card }) => {
 
   return (
     <>
-      {isCardHasChildren() ? (
-        <div className="parent-card">
-          <div className="parent-card__title">{card.title}</div>
+      {/* {isCardHasChildren() ? (
+        <div className="container-card">
+          <div className="container-card__title">{card.title}</div>
 
-          <div className="parent-card__childern-container">
+          <div className="container-card__children-wrapper">
             {card.children.map((child, index: number) => (
               <CardRenderer sectionId={sectionId} key={index} card={child} />
             ))}
@@ -29,7 +29,9 @@ const CardRenderer = ({ sectionId, card }) => {
         </div>
       ) : (
         renderCard()
-      )}
+      )} */}
+
+      {renderCard()}
     </>
   );
 };

@@ -8,11 +8,10 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
     <div className="section-container">
       <div className="section-container__header">
         <h1 className="header__title font-xl">{sectionData.title}</h1>
-        {sectionData.relatedLinks && (
-          <span className="header__seperator">|</span>
-        )}
-        {sectionData.relatedLinks && (
+
+        {sectionData.relatedLinks.length > 0 && (
           <div className="header__subtitle">
+            <span className="header__seperator">|</span>
             לינקים בנושא
             <GoTriangleDown />
           </div>

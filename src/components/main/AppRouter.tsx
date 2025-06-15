@@ -43,9 +43,9 @@ function AppRouter() {
             </div>
 
             {sections ? (
-              sections.map((sectionData, index) => (
-                <Section key={index} sectionData={sectionData} />
-              ))
+              sections.map((sectionData, index) =>
+                index === 0 ? <Section key={index} sectionData={sectionData} /> : null
+              )
             ) : (
               <div>Loading...</div>
             )}
