@@ -1,5 +1,6 @@
 .section-container {
-  padding: 15px 0 30px;
+  padding: 52px 0 30px;
+  border-top: 1px solid rgb(199 199 199 / 45%);
 
   .section-container__header {
     display: flex;
@@ -20,9 +21,10 @@
   }
 }
 
-// .first-section {
-//   margin-top: 10px;
-// }
+.first-section {
+  padding-top: 15px;
+  border: none;
+}
 
 @media (min-width: 768px) {
   .section-container {
