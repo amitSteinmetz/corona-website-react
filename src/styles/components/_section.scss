@@ -10,7 +10,7 @@
     }
   }
 
-  .section-cards {
+  .section-single-cards {
     margin-top: 1.5rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -23,19 +23,9 @@
     margin-top: 10px;
     padding-bottom: 15px;
 
-    .section-cards {
+    .section-single-cards {
       margin-bottom: 1rem;
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-}
-
-@media (min-width: 1200px) {
-  .section-container {
-    .section-cards {
       grid-template-columns: repeat(6, 1fr);
     }
   }
 }
-
-

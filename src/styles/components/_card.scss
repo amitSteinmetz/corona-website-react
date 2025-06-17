@@ -3,13 +3,22 @@
   border-radius: 10px;
   box-shadow: 3px 6px 14px #0000001a;
   padding: 2px 20px;
-  margin: 0 10px;
 
   .container-card__title {
+    padding: 10px;
   }
 
   .container-card__children-wrapper {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 20px;
+
+    @media (min-width: 500px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 }
 
@@ -18,12 +27,11 @@
   color: $textBasicColor;
   border-radius: 10px;
   box-shadow: 3px 3px 11px #465a7a1c;
-  min-height: 184px;
   padding: 10px;
-  // margin: 0 10px;
+  min-height: 100px;
   margin-bottom: 20px;
   position: relative;
-  // border: 1px solid rgba(186, 186, 186, 0.23);
+  border: 1px solid rgba(186, 186, 186, 0.23);
 
   .card-header {
     display: flex;
@@ -40,7 +48,7 @@
   .card__body {
     .main-data__amount {
       display: block;
-      margin: 5px;
+      margin: 10px 5px;
     }
 
     .additional-data__amount {
@@ -57,7 +65,7 @@
   font-size: 1.1rem;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 768px) {
   .card {
     padding: 16px;
   }

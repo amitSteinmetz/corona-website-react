@@ -3,6 +3,12 @@ import { SectionModel } from "../../models/section.model";
 import { GoTriangleDown } from "react-icons/go";
 
 const Section = ({ sectionData }: { sectionData: SectionModel }) => {
+  const sectionSingleCards = sectionData.cards.filter(
+    (card) => card.type === "textual"
+  );
+  const sectionContainerCards = sectionData.cards.filter(
+    (card) => card.type === "container"
+  );
 
   return (
     <div className="section-container">
@@ -18,9 +24,23 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
         )}
       </div>
 
-      <div className="section-cards">
-        {sectionData.cards.map((card, index: number) => (
-          <CardRenderer sectionId={sectionData.id} card={card} key={index}></CardRenderer>
+      <div className="section-single-cards">
+        {sectionSingleCards.map((card, index: number) => (
+          <CardRenderer
+            sectionId={sectionData.id}
+            card={card}
+            key={index}
+          ></CardRenderer>
+        ))}
+      </div>
+
+      <div className="section-container-cards">
+        {sectionContainerCards.map((card, index: number) => (
+          <CardRenderer
+            sectionId={sectionData.id}
+            card={card}
+            key={index}
+          ></CardRenderer>
         ))}
       </div>
     </div>

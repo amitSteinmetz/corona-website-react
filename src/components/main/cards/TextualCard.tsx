@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { moreInfoBtn } from "../../../assets/svgs";
 import { TextualCardModel } from "../../../models/card.model";
 
@@ -6,6 +7,10 @@ const TextualCard = ({ card }) => {
   const textualCardAdditionalData = textualCard?.data[0]?.text
     ? textualCard.data
     : textualCard.data.slice(1);
+
+  useEffect(() => {
+    console.log(textualCard);
+  }, []);
 
   return (
     <div className="card">
@@ -28,14 +33,16 @@ const TextualCard = ({ card }) => {
           </span>
         )}
 
-        {textualCardAdditionalData.map((line, index: number) => (
-          <div className="additional-data-line" key={index}>
-            <span className="additional-data__amount font-xs bold line-height-xl">
-              {line.amount}
-            </span>
-            <span className="additional-data__text font-xs">{line.text}</span>
-          </div>
-        ))}
+        {textualCardAdditionalData.map((line, index: number) =>
+          line.text && (
+            <div className="additional-data-line" key={index}>
+              <span className="additional-data__amount font-xs bold line-height-xl">
+                {line.amount}
+              </span>
+              <span className="additional-data__text font-xs">{line.text}</span>
+            </div>
+          )
+        )}
       </div>
     </div>
   );
