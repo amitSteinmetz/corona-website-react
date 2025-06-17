@@ -8,10 +8,6 @@ const TextualCard = ({ card }) => {
     ? textualCard.data
     : textualCard.data.slice(1);
 
-  useEffect(() => {
-    console.log(textualCard);
-  }, []);
-
   return (
     <div className="card">
       <div className="card-header">

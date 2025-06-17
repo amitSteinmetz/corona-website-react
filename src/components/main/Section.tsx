@@ -3,15 +3,18 @@ import { SectionModel } from "../../models/section.model";
 import { GoTriangleDown } from "react-icons/go";
 
 const Section = ({ sectionData }: { sectionData: SectionModel }) => {
-  const sectionSingleCards = sectionData.cards.filter(
-    (card) => card.type === "textual"
-  );
-  const sectionContainerCards = sectionData.cards.filter(
-    (card) => card.type === "container"
-  );
+  function renderCards(arr) {
+    return arr.map((card, index: number) => (
+      <CardRenderer
+        sectionId={sectionData.id}
+        card={card}
+        key={index}
+      ></CardRenderer>
+    ));
+  }
 
   return (
-    <div className="section-container">
+    <div className={`section-container ${sectionData.id === 1 && "first-section"}`}>
       <div className="section-container__header">
         <h1 className="header__title font-xl">{sectionData.title}</h1>
 
@@ -24,25 +27,25 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
         )}
       </div>
 
-      <div className="section-single-cards">
-        {sectionSingleCards.map((card, index: number) => (
-          <CardRenderer
-            sectionId={sectionData.id}
-            card={card}
-            key={index}
-          ></CardRenderer>
-        ))}
+      <div className="section-textual-cards">
+        {renderCards(
+          sectionData.cards.filter((card) => card.type === "textual")
+        )}
       </div>
 
-      <div className="section-container-cards">
-        {sectionContainerCards.map((card, index: number) => (
-          <CardRenderer
-            sectionId={sectionData.id}
-            card={card}
-            key={index}
-          ></CardRenderer>
-        ))}
+       <div className="section-graphical-cards">
+        {renderCards(
+          sectionData.cards.filter((card) => card.type === "graphical")
+        )}
       </div>
+
+       <div className="section-container-cards">
+        {renderCards(
+          sectionData.cards.filter((card) => card.type === "container")
+        )}
+      </div>
+
+     
     </div>
   );
 };

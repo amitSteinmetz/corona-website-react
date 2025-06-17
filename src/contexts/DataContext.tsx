@@ -241,7 +241,6 @@ const DataProvider = ({ children }) => {
     })
       .then((res) => res.json())
       .then((updatedCard: Card) => {
-        console.log(updatedCard);
         const updatedSections: SectionModel[] = sections.map((section) => {
           if (section.id === sectionId) {
             const updatedCards = section.cards.map((card) =>
