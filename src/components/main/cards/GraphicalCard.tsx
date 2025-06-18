@@ -2,10 +2,10 @@ import ReactECharts from "echarts-for-react";
 import { moreInfoBtn } from "../../../assets/svgs";
 import { FiMoreVertical } from "react-icons/fi";
 import { GraphicalCardModel } from "../../../models/card.model";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DataContext } from "../../../contexts/DataContext";
 
-const GraphicalCard = ({ sectionId, card }) => {
+const GraphicalCard = ({ sectionId, card, hasContainerParent }) => {
   const graphicalCard: GraphicalCardModel = card as GraphicalCardModel;
   const options = JSON.parse(graphicalCard.options);
   const { onChangeGraphDataTimeRange } = useContext(DataContext);
@@ -16,6 +16,7 @@ const GraphicalCard = ({ sectionId, card }) => {
     lastYear: "last-year",
     all: "all",
   };
+  const [showCardDescription, setShowCardDescription] = useState(false);
 
   // options.xAxis.axisLabel.formatter = (value, index) =>
   // index === 4 ? "" : value;
@@ -157,7 +158,7 @@ const GraphicalCard = ({ sectionId, card }) => {
   // };
 
   return (
-    <div className="graph-container card">
+    <div className={`graph-container card ${hasContainerParent && "container-card-child-height" }`}>
       <div className="graph-container__header">
         <div className="header__title bold">{graphicalCard.title}</div>
 
@@ -220,13 +221,27 @@ const GraphicalCard = ({ sectionId, card }) => {
           </li>
         </ul>
 
-        <img
-          src={moreInfoBtn}
-          alt="more info"
-          className="header__more-info-btn"
-        />
+        <div
+          className="card__more-info_btn"
+          onMouseEnter={() => {
+            setShowCardDescription(true);
+          }}
+          onMouseLeave={() => {
+            setShowCardDescription(false);
+          }}
+        >
+          <img src={moreInfoBtn} alt="more info" />
+        </div>
 
-        <div className="header_actions-button">
+        {showCardDescription && (
+          <div className="card__more-info_content-container">
+            <div className="card__more-info_content font-xs">
+              {graphicalCard.description}
+            </div>
+          </div>
+        )}
+
+        <div className="card__actions-button">
           <FiMoreVertical />
         </div>
       </div>

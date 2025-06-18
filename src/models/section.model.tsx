@@ -1,8 +1,9 @@
 import { Card } from "./card.model";
+import { Link } from "./link.model";
 
 export type SectionModel = {
   id: number;
   title: string;
-  relatedLinks?: string[];
+  relatedLinks?: Link[];
   cards: Card[];
 };

@@ -29,7 +29,7 @@
   border-radius: 10px;
   box-shadow: 3px 3px 11px #465a7a1c;
   padding: 10px;
-  min-height: 100px;
+  min-height: 184px;
   margin-bottom: 20px;
   position: relative;
   border: 1px solid rgba(186, 186, 186, 0.23);
@@ -38,11 +38,36 @@
     display: flex;
     align-items: flex-start;
 
-    .card__more-info-btn {
+    .card__more-info_btn {
       margin-right: 0.5rem;
       padding-top: 0.1rem;
       min-width: 1.25rem;
       cursor: pointer;
+    }
+
+    .card__more-info_content-container {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+
+      .card__more-info_content {
+        // background: var(--card-background-color);
+        position: relative;
+        width: 70%;
+        top: 38px;
+        background-color: white;
+        padding: 0.5rem;
+        border-radius: 5px;
+        border: 1px solid white;
+        box-shadow: 0 10px 20px 10px #00000029;
+        line-height: 1.2;
+        white-space: pre-line;
+        font-size: 0.8rem;
+      }
     }
   }
 
@@ -56,6 +81,10 @@
       margin: 5px;
     }
   }
+}
+
+.container-card-child-height {
+  min-height: 100px;
 }
 
 .main-data-bigger-font {

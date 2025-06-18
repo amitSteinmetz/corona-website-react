@@ -1,7 +1,7 @@
 import TextualCard from "./TextualCard";
 import GraphicalCard from "./GraphicalCard";
 
-const CardRenderer = ({ sectionId, card }) => {
+const CardRenderer = ({ sectionId, card, hasContainerParent }) => {
   function isCardHasChildren() {
     return card.type === "container";
   }
@@ -9,9 +9,15 @@ const CardRenderer = ({ sectionId, card }) => {
   function renderCard() {
     switch (card.type) {
       case "textual":
-        return <TextualCard card={card} />;
+        return <TextualCard card={card} hasContainerParent={hasContainerParent} />;
       case "graphical":
-        return <GraphicalCard sectionId={sectionId} card={card} />;
+        return (
+          <GraphicalCard
+            sectionId={sectionId}
+            card={card}
+            hasContainerParent={hasContainerParent}
+          />
+        );
     }
   }
 
@@ -23,7 +29,7 @@ const CardRenderer = ({ sectionId, card }) => {
 
           <div className="container-card__children-wrapper">
             {card.children.map((child, index: number) => (
-              <CardRenderer sectionId={sectionId} key={index} card={child} />
+              <CardRenderer sectionId={sectionId} key={index} card={child} hasContainerParent={hasContainerParent}/>
             ))}
           </div>
         </div>

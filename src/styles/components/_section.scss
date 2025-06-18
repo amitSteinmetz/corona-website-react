@@ -7,9 +7,64 @@
     align-items: center;
     margin-bottom: 5px;
 
-    .header__seperator {
-      margin: 0 15px;
-      color: #afb9bf;
+    .section-header__subtitle {
+      cursor: pointer;
+
+      .section-header__seperator {
+        margin: 0 15px;
+        color: #afb9bf;
+      }
+
+      .section-header__arrowBtn {
+        margin: 0 3px 0-2px;
+      }
+
+      .subtitle__links-container {
+        position: fixed;
+        top: 115px;
+        left: 0;
+        height: calc(100vh - 115px);
+        width: 100%;
+        z-index: 100;
+        background-color: rgba(0, 0, 0, 0.4);
+
+        .subtitle__links {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          background-color: white;
+          border-top-left-radius: 20px;
+          border-top-right-radius: 20px;
+
+          .subtitle__links_line-symbol {
+            width: 30px;
+            height: 4px;
+            border-radius: 30px;
+            background-color: rgb(165, 159, 159);
+            margin: 15px auto 10px;
+          }
+
+          .subtitle__links_title {
+            margin: 0 10px 15px 0;
+          }
+
+          .links__item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+
+            .web-icon {
+              margin-left: 10px;
+              width: 30px;
+              height: 30px;
+            }
+          }
+
+          .first-link {
+            border-bottom: 0.5px solid rgb(209, 197, 197);
+          }
+        }
+      }
     }
   }
 

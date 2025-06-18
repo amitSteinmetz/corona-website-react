@@ -2,6 +2,7 @@ export interface CardModel {
   id: number;
   title: string;
   type: string; // this will act as the "discriminator"
+  description: string;
 }
 
 export interface TextualCardModel extends CardModel {
