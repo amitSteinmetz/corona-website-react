@@ -1,5 +1,7 @@
 .header-container {
   position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .header__gradient-line {
@@ -22,6 +24,7 @@
   align-items: center;
   width: 100%;
   padding: 13px 16px;
+  background-color: white;
 
   .header__title {
     font-weight: 700;
