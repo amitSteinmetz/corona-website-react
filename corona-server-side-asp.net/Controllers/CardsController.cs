@@ -79,6 +79,20 @@ namespace corona_server_side_asp.net.Controllers
             return (updatedCard != null) ? Ok(updatedCard) : NotFound("Card not found.");
         }
 
+        //[HttpPost("add-description/{sectionId}/{cardId}")]
+        //public async Task<IActionResult> AddDescriptionToCard(int sectionId, int cardId, [FromBody] string description)
+        //{
+        //    // Edge cases check
+        //    if (sectionId <= 0 || cardId <= 0 || string.IsNullOrEmpty(description))
+        //    {
+        //        return BadRequest("Invalid section ID, card ID, or description.");
+        //    }
+
+        //    var result = await _cardsRepository.AddDescriptionToCard(sectionId, cardId, description);
+        //    if (result == -1) return NotFound("Section or card not found.");
+        //    return Ok("Description added successfully.");
+        //}
+
         private async Task<string> GetSectionTitle(int sectionId)
         {
             var title = await _cardsRepository.GetCardSectionTitle(sectionId);

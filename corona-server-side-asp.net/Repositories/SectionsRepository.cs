@@ -27,7 +27,7 @@ namespace corona_server_side_asp.net.Repositories
             await PreloadCardTypes();
 
             var sections = await _context.Sections
-                .Include(s => s.Cards)
+                .Include(s => s.Cards).Include(s => s.RelatedLinks)
                 .ToListAsync();
 
             _cardsRepository.WriteExcelDataToCards(ref sections);
@@ -50,6 +50,16 @@ namespace corona_server_side_asp.net.Repositories
             await _context.Set<GraphicalCardModel>().LoadAsync();
         }
 
-       
+       public async Task<int> AddLinksToSection(int sectionId, List<LinkModel> links)
+        {
+            var section = _context.Sections
+                .Include(s => s.RelatedLinks)
+                .FirstOrDefault(s => s.Id == sectionId);
+
+            if (section == null) return -1;
+
+            section.RelatedLinks.AddRange(links);
+            return await _context.SaveChangesAsync();
+        }
     }
 }

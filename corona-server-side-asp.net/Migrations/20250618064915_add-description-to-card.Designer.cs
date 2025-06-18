@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using corona_server_side_asp.net.Data;
 
@@ -11,9 +12,11 @@ using corona_server_side_asp.net.Data;
 namespace corona_server_side_asp.net.Migrations
 {
     [DbContext(typeof(CoronaDataContext))]
-    partial class CoronaDataContextModelSnapshot : ModelSnapshot
+    [Migration("20250618064915_add-description-to-card")]
+    partial class adddescriptiontocard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,36 +296,6 @@ namespace corona_server_side_asp.net.Migrations
                     b.ToTable("CardTextDataModel");
                 });
 
-            modelBuilder.Entity("corona_server_side_asp.net.Models.LinkModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SectionModelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SubTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SectionModelId");
-
-                    b.ToTable("LinkModel");
-                });
-
             modelBuilder.Entity("corona_server_side_asp.net.Models.SectionModel", b =>
                 {
                     b.Property<int>("Id")
@@ -330,6 +303,10 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.PrimitiveCollection<string>("RelatedLinks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -434,18 +411,9 @@ namespace corona_server_side_asp.net.Migrations
                         .HasForeignKey("TextualCardModelId");
                 });
 
-            modelBuilder.Entity("corona_server_side_asp.net.Models.LinkModel", b =>
-                {
-                    b.HasOne("corona_server_side_asp.net.Models.SectionModel", null)
-                        .WithMany("RelatedLinks")
-                        .HasForeignKey("SectionModelId");
-                });
-
             modelBuilder.Entity("corona_server_side_asp.net.Models.SectionModel", b =>
                 {
                     b.Navigation("Cards");
-
-                    b.Navigation("RelatedLinks");
                 });
 
             modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.ContainerCardModel", b =>

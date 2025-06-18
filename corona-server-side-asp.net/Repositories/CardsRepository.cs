@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Nodes;
 using System.Text.Json;
+using corona_server_side_asp.net.Migrations;
 
 namespace corona_server_side_asp.net.Repositories
 {
@@ -69,7 +70,7 @@ namespace corona_server_side_asp.net.Repositories
             var section = await _context.Sections
                 .FirstOrDefaultAsync(s => s.Id == sectionId);
 
-           return section == null ? "" : section.Title;
+            return section == null ? "" : section.Title;
         }
 
         public async Task<CardModel> GetCard(int sectionId, int cardId)
@@ -116,50 +117,84 @@ namespace corona_server_side_asp.net.Repositories
                 else if (card is GraphicalCardModel graphicalCard)
                 {
                     var optionsNode = JsonNode.Parse(graphicalCard.Options);
-                    if (optionsNode != null) 
+                    if (optionsNode is JsonObject options)
                     {
-                        var keys = parsedData.Select(dict => dict.TryGetValue("key", out var k) ? k : "").ToList();
+                        var keys = parsedData.Select(dict => dict.TryGetValue("key", out var k) ? k : "").ToHashSet();
                         var values = parsedData.Select(dict => dict.TryGetValue("value", out var v) ? v : "").ToList();
-                        var groups = parsedData.Select(dict => dict.TryGetValue("group", out var avg) ? avg : "").ToList();
+                        var groups = parsedData.Select(dict => dict.TryGetValue("group", out var avg) ? avg : "").Distinct().ToList();
 
-                        // Set groups inside legend data to field "name"
-                        var legendData = optionsNode["legend"]?["data"]?["name"];
-                        if (legendData != null && legendData is JsonArray legendDataArray)
+                        // Ensure legend object
+                        if (options["legend"] is not JsonObject legend)
                         {
-                            legendDataArray.Clear();
-                            foreach (var group in groups)
-                            {
-                                legendDataArray.Add(JsonSerializer.SerializeToNode(group));
-                            }
+                            legend = new JsonObject();
+                            options["legend"] = legend;
+                        }
+
+                        // Ensure legend.data array
+                        if (legend["data"] is not JsonArray legendDataArray)
+                        {
+                            legendDataArray = new JsonArray();
+                            legend["data"] = legendDataArray;
+                        }
+
+                        // Fill legend.data with group names
+                        legendDataArray.Clear();
+                        foreach (var group in groups)
+                        {
+                            legendDataArray.Add(new JsonObject { ["name"] = group, ["icon"] = "circle" });
+                        }
+
+                        // Ensure xAxis object
+                        if (options["xAxis"] is not JsonObject xAxis)
+                        {
+                            xAxis = new JsonObject();
+                            options["xAxis"] = xAxis;
                         }
 
                         // Set xAxis.data
-                        var xAxisData = optionsNode["xAxis"]?["data"];
-                        if (xAxisData != null) xAxisData = JsonSerializer.SerializeToNode(keys);
-                        
-                        // Set series.data
-                        var series = optionsNode["series"] as JsonArray;
-                        if (series != null && series.Count == groups.Count)
-                        {
-                            for (int i = 0; i < series.Count; i++)
-                            {
-                                var groupValues = parsedData
-                                    .Where(dict => dict.TryGetValue("group", out var g) && g == groups[i])
-                                    .Select(dict => dict.TryGetValue("value", out var v) ? v : "")
-                                    .ToList();
+                        xAxis["data"] = JsonSerializer.SerializeToNode(keys);
 
-                                // insert groupValues into series[i]["data"] as an array
-                                if (series[i] is JsonObject seriesObj && seriesObj.ContainsKey("data"))
-                                {
-                                    seriesObj["data"] = JsonSerializer.SerializeToNode(groupValues);
-                                }                             
-                            }
+                        // Ensure series array
+                        if (options["series"] is not JsonArray seriesArray)
+                        {
+                            seriesArray = new JsonArray();
+                            options["series"] = seriesArray;
                         }
 
-                        // Save the modified options back to the model
-                        graphicalCard.Options = optionsNode.ToJsonString(new JsonSerializerOptions { WriteIndented = false });
+                        // Adjust series count to match group count
+                        while (seriesArray.Count < groups.Count)
+                            seriesArray.Add(new JsonObject());
+
+                        while (seriesArray.Count > groups.Count)
+                            seriesArray.RemoveAt(seriesArray.Count - 1);
+
+                        for (int i = 0; i < groups.Count; i++)
+                        {
+                            var groupName = groups[i];
+                            var groupValues = parsedData
+                                .Where(dict => dict.TryGetValue("group", out var g) && g == groupName)
+                                .Select(dict => dict.TryGetValue("value", out var v) ? v : "")
+                                .ToList();
+
+                            if (seriesArray[i] is not JsonObject seriesObj)
+                            {
+                                seriesObj = new JsonObject();
+                                seriesArray[i] = seriesObj;
+                            }
+
+                            seriesObj["name"] = groupName;
+                            seriesObj["type"] = "line";
+                            seriesObj["smooth"] = true;
+                            seriesObj["symbol"] = "circle";
+                            seriesObj["symbolSize"] = 6;
+                            seriesObj["data"] = JsonSerializer.SerializeToNode(groupValues);
+                        }
+
+                        graphicalCard.Options = options.ToJsonString(new JsonSerializerOptions { WriteIndented = false });
                     }
+
                 }
+
             }
             else if (card is ContainerCardModel containerCard && containerCard.Children != null)
             {
@@ -176,7 +211,7 @@ namespace corona_server_side_asp.net.Repositories
             if (card == null) return null;
 
             if (card is GraphicalCardModel graphicalCard)
-            { 
+            {
                 var fileName = $"{period}.xlsx";
                 WriteExcelDataToCard(graphicalCard, await GetCardSectionTitle(sectionId), fileName);
                 graphicalCard.ExcelFileName = fileName;
@@ -185,7 +220,14 @@ namespace corona_server_side_asp.net.Repositories
             }
             else throw new InvalidOperationException("Card is not a graphical card.");
         }
+
+        //public async Task<int> AddDescriptionToCard(int sectionId, int cardId, string description)
+        //{
+        //    var card = await GetCard(sectionId, cardId);
+        //    if (card == null) return -1;
+
+        //    card.Description = description;
+        //    return await _context.SaveChangesAsync();
+        //}
     }
 }
-
-

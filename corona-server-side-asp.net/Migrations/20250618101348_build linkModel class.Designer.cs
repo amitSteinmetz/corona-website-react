@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using corona_server_side_asp.net.Data;
 
@@ -11,9 +12,11 @@ using corona_server_side_asp.net.Data;
 namespace corona_server_side_asp.net.Migrations
 {
     [DbContext(typeof(CoronaDataContext))]
-    partial class CoronaDataContextModelSnapshot : ModelSnapshot
+    [Migration("20250618101348_build linkModel class")]
+    partial class buildlinkModelclass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,9 +303,6 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SectionModelId")
                         .HasColumnType("int");

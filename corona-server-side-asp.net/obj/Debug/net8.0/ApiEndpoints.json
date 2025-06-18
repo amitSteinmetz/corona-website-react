@@ -113,5 +113,26 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.SectionsController",
+    "Method": "AddLinksToSection",
+    "RelativePath": "api/Sections/{sectionId}/links",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "links",
+        "Type": "System.Collections.Generic.List\u00601[[corona_server_side_asp.net.Models.LinkModel, corona-server-side-asp.net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

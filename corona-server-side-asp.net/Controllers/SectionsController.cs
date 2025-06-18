@@ -31,5 +31,14 @@ namespace corona_server_side_asp.net.Controllers
             var result = await _sectionsRepository.AddSectionAsync(section);
             return CreatedAtAction(nameof(AddSection), new { id = section.Id }, section);
         }
+
+        [HttpPost("{sectionId}/links")]
+        public async Task<IActionResult> AddLinksToSection(int sectionId, [FromBody] List<LinkModel> links)
+        {
+            if (links == null || links.Count == 0) return BadRequest("No links provided.");
+
+            var result = await _sectionsRepository.AddLinksToSection(sectionId, links);
+            return (result != -1) ? Ok("Links added successfully.") : NotFound("Section not found.");
+        }
     }
 }

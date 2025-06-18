@@ -10,6 +10,7 @@ namespace corona_server_side_asp.net.IRepositories
         Task<int> AddChildToContainerCard(int sectionId, int containerCardId, CardModel card);
         Task<string> GetCardSectionTitle(int sectionId);
         Task<CardModel> ChangeGraphDataSource(int sectionId, int cardId, string period);
+        //Task<int> AddDescriptionToCard(int sectionId, int cardId, string description);
         void WriteExcelDataToCards(ref List<SectionModel> sections);
     }
 }
