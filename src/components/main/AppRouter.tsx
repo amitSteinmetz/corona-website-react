@@ -10,10 +10,6 @@ function AppRouter() {
   const { theme } = useContext(ThemeContext);
   const { sections } = useContext(DataContext);
 
-  useEffect(() => {
-    console.log(sections);
-  }, [sections]);
-
   return (
     <BrowserRouter>
       <div

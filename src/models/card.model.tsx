@@ -11,6 +11,7 @@ export interface TextualCardModel extends CardModel {
 
 export interface GraphicalCardModel extends CardModel {
   options: string;
+  hasTimeRangeFilter: boolean;
 }
 
 export interface ContainerCardModel extends CardModel {

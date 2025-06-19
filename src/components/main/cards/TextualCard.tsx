@@ -8,34 +8,24 @@ const TextualCard = ({ card, hasContainerParent }) => {
     ? textualCard.data
     : textualCard.data.slice(1);
 
-  const [showCardDescription, setShowCardDescription] = useState(false);
-
   return (
-    <div className={`card ${hasContainerParent && "container-card-child-height" }`}>
-      <div className="card-header">
+    <div
+      className={`card ${hasContainerParent && "container-card-child-height"}`}
+    >
+      <div className="card__header">
         <div className="card__title font-base bold line-height-2xl">
           {textualCard.title}
         </div>
 
-        <div
-          className="card__more-info_btn"
-          onMouseEnter={() => {
-            setShowCardDescription(true);
-          }}
-          onMouseLeave={() => {
-            setShowCardDescription(false);
-          }}
-        >
+        <button className="card__more-info_btn">
           <img src={moreInfoBtn} alt="more info" />
-        </div>
+        </button>
 
-        {showCardDescription && (
-          <div className="card__more-info_content-container">
-            <div className="card__more-info_content">
-              {textualCard.description}
-            </div>
+        <div className="card__more-info_content-container">
+          <div className="card__more-info_content">
+            {textualCard.description}
           </div>
-        )}
+        </div>
       </div>
 
       <div className="card__body">

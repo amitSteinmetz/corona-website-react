@@ -34,15 +34,21 @@
   position: relative;
   border: 1px solid rgba(186, 186, 186, 0.23);
 
-  .card-header {
+  .card__header {
     display: flex;
     align-items: flex-start;
 
     .card__more-info_btn {
       margin-right: 0.5rem;
-      padding-top: 0.1rem;
+      padding-top: 0.25rem;
       min-width: 1.25rem;
       cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .card__more-info_btn:focus + .card__more-info_content-container {
+      display: flex;
     }
 
     .card__more-info_content-container {
@@ -51,8 +57,9 @@
       top: 0;
       left: 0;
       z-index: 10;
-      display: flex;
+      display: none;
       justify-content: center;
+      animation: fade 0.3s ease-in-out;
 
       .card__more-info_content {
         // background: var(--card-background-color);
@@ -99,5 +106,14 @@
 @media (min-width: 768px) {
   .card {
     padding: 16px;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

@@ -3,28 +3,27 @@ import { SectionModel } from "../../models/section.model";
 import { GoTriangleDown } from "react-icons/go";
 import { useEffect, useState } from "react";
 import webIcon from "../../assets/images/web-icon.png";
+import { Card } from "../../models/card.model";
 
 const Section = ({ sectionData }: { sectionData: SectionModel }) => {
   const [showSectionLinks, setShowSectionLinks] = useState(false);
 
-  function renderCards(arr) {
-    return arr.map((card, index: number) => (
-      <CardRenderer
-        sectionId={sectionData.id}
-        card={card}
-        key={index}
-        hasContainerParent={card.type === "container"}
-      ></CardRenderer>
-    ));
+  function renderCards(arr: Card[]) {
+    if (arr.length === 0) return null;
+
+    return (
+      <div className={`section-${arr[0].type}-cards`}>
+        {arr.map((card, index: number) => (
+          <CardRenderer
+            sectionId={sectionData.id}
+            card={card}
+            key={index}
+            hasContainerParent={card.type === "container"}
+          ></CardRenderer>
+        ))}
+      </div>
+    );
   }
-  // useEffect(() => {
-  //   if (
-  //     document.body.style.overflow === "hidden" ||
-  //     parseInt(document.body.style.width) < 500
-  //   ) {
-  //     document.body.style.overflow = showSectionLinks ? "hidden" : "auto";
-  //   }
-  // }, [showSectionLinks]);
 
   return (
     <div
@@ -38,9 +37,6 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
             className="section-header__subtitle"
             onClick={() => {
               setShowSectionLinks(!showSectionLinks);
-            }}
-            onMouseLeave={() => {
-              setShowSectionLinks(false);
             }}
           >
             <span className="section-header__seperator">|</span>
@@ -81,23 +77,15 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
         )}
       </div>
 
-      <div className="section-textual-cards">
-        {renderCards(
-          sectionData.cards.filter((card) => card.type === "textual")
-        )}
-      </div>
+      {renderCards(sectionData.cards.filter((card) => card.type === "textual"))}
 
-      <div className="section-graphical-cards">
-        {renderCards(
-          sectionData.cards.filter((card) => card.type === "graphical")
-        )}
-      </div>
+      {renderCards(
+        sectionData.cards.filter((card) => card.type === "graphical")
+      )}
 
-      <div className="section-container-cards">
-        {renderCards(
-          sectionData.cards.filter((card) => card.type === "container")
-        )}
-      </div>
+      {renderCards(
+        sectionData.cards.filter((card) => card.type === "container")
+      )}
     </div>
   );
 };

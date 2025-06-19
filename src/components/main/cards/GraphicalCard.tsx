@@ -4,6 +4,8 @@ import { FiMoreVertical } from "react-icons/fi";
 import { GraphicalCardModel } from "../../../models/card.model";
 import { useContext, useState } from "react";
 import { DataContext } from "../../../contexts/DataContext";
+import { CiShare2 } from "react-icons/ci";
+import { IoIosArrowRoundDown } from "react-icons/io";
 
 const GraphicalCard = ({ sectionId, card, hasContainerParent }) => {
   const graphicalCard: GraphicalCardModel = card as GraphicalCardModel;
@@ -16,7 +18,7 @@ const GraphicalCard = ({ sectionId, card, hasContainerParent }) => {
     lastYear: "last-year",
     all: "all",
   };
-  const [showCardDescription, setShowCardDescription] = useState(false);
+  const [showCardActions, setShowCardActions] = useState(false);
 
   // options.xAxis.axisLabel.formatter = (value, index) =>
   // index === 4 ? "" : value;
@@ -158,92 +160,113 @@ const GraphicalCard = ({ sectionId, card, hasContainerParent }) => {
   // };
 
   return (
-    <div className={`graph-container card ${hasContainerParent && "container-card-child-height" }`}>
-      <div className="graph-container__header">
-        <div className="header__title bold">{graphicalCard.title}</div>
-
-        <ul className="time-filter-table">
-          <li
-            className="time-filter-table__item"
-            onClick={() => {
-              onChangeGraphDataTimeRange(
-                sectionId,
-                card.id,
-                timeRanges.lastMonth
-              );
-            }}
-          >
-            חודש אחרון
-          </li>
-          <li
-            className="time-filter-table__item"
-            onClick={() => {
-              onChangeGraphDataTimeRange(
-                sectionId,
-                card.id,
-                timeRanges.last3Months
-              );
-            }}
-          >
-            3 חודשים
-          </li>
-          <li
-            className="time-filter-table__item"
-            onClick={() => {
-              onChangeGraphDataTimeRange(
-                sectionId,
-                card.id,
-                timeRanges.last6Months
-              );
-            }}
-          >
-            6 חודשים
-          </li>
-          <li
-            className="time-filter-table__item"
-            onClick={() => {
-              onChangeGraphDataTimeRange(
-                sectionId,
-                card.id,
-                timeRanges.lastYear
-              );
-            }}
-          >
-            שנה
-          </li>
-          <li
-            className="time-filter-table__item"
-            onClick={() => {
-              onChangeGraphDataTimeRange(sectionId, card.id, timeRanges.all);
-            }}
-          >
-            עד עכשיו
-          </li>
-        </ul>
-
-        <div
-          className="card__more-info_btn"
-          onMouseEnter={() => {
-            setShowCardDescription(true);
-          }}
-          onMouseLeave={() => {
-            setShowCardDescription(false);
-          }}
-        >
-          <img src={moreInfoBtn} alt="more info" />
+    <div
+      className={`graph-container card ${
+        hasContainerParent ? "container-card-child-height" : ""
+      }`}
+    >
+      <div className="card__header">
+        <div className="card__title font-base bold line-height-2xl">
+          {graphicalCard.title}
         </div>
 
-        {showCardDescription && (
-          <div className="card__more-info_content-container">
-            <div className="card__more-info_content font-xs">
-              {graphicalCard.description}
-            </div>
-          </div>
+        {graphicalCard.hasTimeRangeFilter && (
+          <ul className="time-filter-table">
+            <li
+              className="time-filter-table__item"
+              onClick={() => {
+                onChangeGraphDataTimeRange(
+                  sectionId,
+                  card.id,
+                  timeRanges.lastMonth
+                );
+              }}
+            >
+              חודש אחרון
+            </li>
+            <li
+              className="time-filter-table__item"
+              onClick={() => {
+                onChangeGraphDataTimeRange(
+                  sectionId,
+                  card.id,
+                  timeRanges.last3Months
+                );
+              }}
+            >
+              3 חודשים
+            </li>
+            <li
+              className="time-filter-table__item"
+              onClick={() => {
+                onChangeGraphDataTimeRange(
+                  sectionId,
+                  card.id,
+                  timeRanges.last6Months
+                );
+              }}
+            >
+              6 חודשים
+            </li>
+            <li
+              className="time-filter-table__item"
+              onClick={() => {
+                onChangeGraphDataTimeRange(
+                  sectionId,
+                  card.id,
+                  timeRanges.lastYear
+                );
+              }}
+            >
+              שנה
+            </li>
+            <li
+              className="time-filter-table__item"
+              onClick={() => {
+                onChangeGraphDataTimeRange(sectionId, card.id, timeRanges.all);
+              }}
+            >
+              עד עכשיו
+            </li>
+          </ul>
         )}
 
-        <div className="card__actions-button">
-          <FiMoreVertical />
+        <button className="card__more-info_btn">
+          <img src={moreInfoBtn} alt="more info" />
+        </button>
+
+        <div className="card__more-info_content-container">
+          <div className="card__more-info_content font-xs">
+            {graphicalCard.description}
+          </div>
         </div>
+
+        <button
+          className="card__actions-button"
+          onClick={() => {
+            setShowCardActions(!showCardActions);
+          }}
+        >
+          <FiMoreVertical />
+        </button>
+
+        {showCardActions && (
+          <ul className="card__actions-list">
+            <li className="card__action-item">
+              <button>
+                <CiShare2 />
+              </button>
+              <span className="action-item-text">לשיתוף</span>
+            </li>
+
+            <li className="card__action-item">
+              <button>
+                <IoIosArrowRoundDown />
+              </button>
+              <span className="action-item-text">להורדה</span>
+            </li>
+          </ul>
+        )}
       </div>
 
       <ReactECharts option={options} />
