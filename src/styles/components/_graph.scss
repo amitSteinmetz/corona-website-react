@@ -51,3 +51,9 @@
     width: 50%;
   }
 }
+
+@media (min-width: 1280px) {
+  .graph-container {
+    width: calc(100% / 3);
+  }
+}

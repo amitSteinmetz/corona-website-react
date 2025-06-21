@@ -1,6 +1,6 @@
 import CardRenderer from "./cards/CardRenderer";
 import { SectionModel } from "../../models/section.model";
-import { GoTriangleDown } from "react-icons/go";
+import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import { useEffect, useState } from "react";
 import webIcon from "../../assets/images/web-icon.png";
 import { Card } from "../../models/card.model";
@@ -40,8 +40,19 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
             }}
           >
             <span className="section-header__seperator">|</span>
-            לינקים בנושא
-            <GoTriangleDown className="section-header__arrowBtn" />
+            <span
+              className={`section-header__subtitle-text ${
+                showSectionLinks ? "bold" : ""
+              }`}
+            >
+              לינקים בנושא
+            </span>
+
+            {showSectionLinks ? (
+              <GoTriangleUp className="section-header__arrowBtn" />
+            ) : (
+              <GoTriangleDown className="section-header__arrowBtn" />
+            )}
             {showSectionLinks && (
               <div className="subtitle__links-container">
                 <div className="subtitle__links">
