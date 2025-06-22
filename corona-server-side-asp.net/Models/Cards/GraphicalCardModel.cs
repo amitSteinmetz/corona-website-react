@@ -4,5 +4,6 @@
     {
        
         public string Options { get; set; }
+        public bool HasTimeRangeFilter { get; set; }
     }
 }
