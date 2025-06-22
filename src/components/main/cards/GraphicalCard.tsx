@@ -9,7 +9,7 @@ import { IoIosArrowRoundDown } from "react-icons/io";
 
 const GraphicalCard = ({ sectionId, card, hasContainerParent }) => {
   const graphicalCard: GraphicalCardModel = card as GraphicalCardModel;
-  // const options = JSON.parse(graphicalCard.options);
+  const options = JSON.parse(graphicalCard.options);
   const { onChangeGraphDataTimeRange } = useContext(DataContext);
   const timeRanges = {
     lastMonth: "last-month",
@@ -19,92 +19,6 @@ const GraphicalCard = ({ sectionId, card, hasContainerParent }) => {
     all: "all",
   };
   const [showCardActions, setShowCardActions] = useState(false);
-  // console.log(options);
-
-  const options = {
-  grid: {
-      left: 70,
-      right: 20,
-      top: 30,
-      bottom: 45,
-    },
-    xAxis: {
-      type: "category",
-      data: ["04.05-10.05", "11.05-17.05", "18.05-24.05", ""],
-      boundaryGap: false,
-      axisLine: {
-        lineStyle: {
-          color: "#e0e0e0",
-        },
-      },
-      axisLabel: {
-        margin: 30,
-        align: "left",
-        rotate: 20,
-        fontSize: 10,
-        color: "#484d49",
-      },
-    },
-    yAxis: {
-      type: "value",
-      name: "ממוצע מאומתים",
-      nameLocation: "middle",
-      offset: 10,
-      nameTextStyle: {
-        fontSize: 14,
-        fontWeight: 500,
-        fontFamily: "Open Sans",
-        padding: [0, 0, 30, 0],
-      },
-    },
-    series: [
-      {
-        type: "line",
-        step: "end",
-        data: [8, 11, 6, ""],
-        lineStyle: {
-          color: "rgb(0, 208, 245)",
-          width: 2,
-        },
-        symbol: "circle",
-        symbolSize: 0.7,
-        itemStyle: {
-          color: "rgb(0, 208, 245)"
-        },
-        emphasis: {
-          focus: "series",
-          scale: 10,
-          itemStyle: {
-          color: "white",
-          borderColor: "rgb(0, 208, 245)",
-          borderWidth: 2
-        },
-        },
-        label: {
-          show: true,
-          fontSize: 14,
-          fontFamily: "Open Sans",
-          color: "#333",
-          padding: [0, 0, 0, 50],
-        },
-        markArea: {
-          itemStyle: {
-            color: "rgba(0, 237, 245, 0.03)",
-          },
-          data: [
-            [
-              {
-                xAxis: "04.05-10.05",
-              },
-              {
-                xAxis: "11.05-17.05",
-              },
-            ],
-          ],
-        },
-      },
-    ]
-};
 
   return (
     <div
@@ -118,64 +32,30 @@ const GraphicalCard = ({ sectionId, card, hasContainerParent }) => {
         </div>
 
         {graphicalCard.hasTimeRangeFilter && (
-          <ul className="time-filter-table">
-            <li
-              className="time-filter-table__item"
-              onClick={() => {
+          //         <select name="cars" id="cars">
+          //   <option value="volvo">Volvo</option>
+          //   <option value="saab">Saab</option>
+          //   <option value="opel">Opel</option>
+          //   <option value="audi">Audi</option>
+          // </select>
+          <div className="time-filter-table">
+            <select
+              onChange={(e) => {
+                const selectedTimeRange = e.target.value;
                 onChangeGraphDataTimeRange(
                   sectionId,
                   card.id,
-                  timeRanges.lastMonth
+                  selectedTimeRange
                 );
               }}
             >
-              חודש אחרון
-            </li>
-            <li
-              className="time-filter-table__item"
-              onClick={() => {
-                onChangeGraphDataTimeRange(
-                  sectionId,
-                  card.id,
-                  timeRanges.last3Months
-                );
-              }}
-            >
-              3 חודשים
-            </li>
-            <li
-              className="time-filter-table__item"
-              onClick={() => {
-                onChangeGraphDataTimeRange(
-                  sectionId,
-                  card.id,
-                  timeRanges.last6Months
-                );
-              }}
-            >
-              6 חודשים
-            </li>
-            <li
-              className="time-filter-table__item"
-              onClick={() => {
-                onChangeGraphDataTimeRange(
-                  sectionId,
-                  card.id,
-                  timeRanges.lastYear
-                );
-              }}
-            >
-              שנה
-            </li>
-            <li
-              className="time-filter-table__item"
-              onClick={() => {
-                onChangeGraphDataTimeRange(sectionId, card.id, timeRanges.all);
-              }}
-            >
-              עד עכשיו
-            </li>
-          </ul>
+              <option value={timeRanges.lastMonth}>חודש אחרון</option>
+              <option value={timeRanges.last3Months}>3 חודשים</option>
+              <option value={timeRanges.last6Months}>6 חודשים</option>
+              <option value={timeRanges.lastYear}>שנה אחרונה</option>
+              <option value={timeRanges.all}>הכל</option>
+            </select>
+          </div>
         )}
 
         <button className="card__more-info_btn">
