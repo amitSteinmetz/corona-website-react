@@ -37,6 +37,7 @@
   .card__header {
     display: flex;
     align-items: flex-start;
+    width: 85%;
 
     .card__more-info_btn {
       margin-right: 0.5rem;
@@ -105,7 +106,7 @@
 
 @media (min-width: 768px) {
   .card {
-    padding: 16px;
+    padding: 10px 16px;
   }
 }
 
