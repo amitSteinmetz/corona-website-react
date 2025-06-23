@@ -12,12 +12,12 @@ const TimeTableFilter = ({ sectionId, cardId }) => {
     { key: "lastYear", value: "last-year", valueInHebrew: "שנה" },
     { key: "all", value: "all", valueInHebrew: "עד עכשיו" },
   ];
-  const [currentTimeRange, setCurrentTimeRange] = useState(timeRanges[0]);
+  const [displayedTimeRange, setDisplayedTimeRange] = useState(timeRanges[0]);
   const [selectedTimeRange, setSelectedTimeRange] = useState(timeRanges[0]);
 
   function handleSubmit(event) {
     event.preventDefault();
-    setSelectedTimeRange(currentTimeRange);
+    setDisplayedTimeRange(selectedTimeRange);
     onChangeGraphDataTimeRange(sectionId, cardId, selectedTimeRange.value);
     setShowTable(false);
   }
@@ -28,7 +28,7 @@ const TimeTableFilter = ({ sectionId, cardId }) => {
         className="table__current font-sm"
         onClick={() => setShowTable(!showTable)}
       >
-        <span>{selectedTimeRange.valueInHebrew}</span>
+        <span>{displayedTimeRange.valueInHebrew}</span>
         <IoIosArrowDown className="font-sm" />
       </div>
 
@@ -41,9 +41,9 @@ const TimeTableFilter = ({ sectionId, cardId }) => {
               <div className="form-input font-sm" key={range.key}>
                 <input
                   type="radio"
-                  checked={currentTimeRange.value === range.value}
+                  checked={selectedTimeRange.value === range.value}
                   onChange={() => {
-                    setCurrentTimeRange(range);
+                    setSelectedTimeRange(range);
                   }}
                 />
                 <label>{range.valueInHebrew}</label>
