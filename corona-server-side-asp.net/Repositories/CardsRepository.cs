@@ -138,10 +138,13 @@ namespace corona_server_side_asp.net.Repositories
 
                         if (groups.Count > 1)
                         {
-                            var legend = new JsonObject();
-                            var legendDataArray = new JsonArray();
+                            if (options["legend"] is not JsonObject legend)
+                            {
+                                legend = new JsonObject();
+                                options["legend"] = legend;
+                            }
 
-                            options["legend"] = legend;
+                            var legendDataArray = new JsonArray();
                             legend["data"] = legendDataArray;
 
                             while (seriesArray.Count < groups.Count)
@@ -158,7 +161,7 @@ namespace corona_server_side_asp.net.Repositories
                                     .Select(dict => dict.TryGetValue("value", out var v) ? v : "")
                                     .ToList();
 
-                                legendDataArray.Add(new JsonObject { ["name"] = groupName, ["icon"] = "circle" });
+                                legendDataArray.Insert(0, new JsonObject { ["name"] = groupName, ["icon"] = "circle" });
 
                                 if (seriesArray[i] is not JsonObject seriesObj)
                                 {
