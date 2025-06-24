@@ -12,8 +12,6 @@ const GraphicalCard = ({ sectionId, card, hasContainerParent }) => {
   const options = JSON.parse(graphicalCard.options);
   const [showCardActions, setShowCardActions] = useState(false);
 
-  console.log(options);
-
   // const options = {
   //   tooltip: {
   //     trigger: "axis",
@@ -53,11 +51,9 @@ const GraphicalCard = ({ sectionId, card, hasContainerParent }) => {
   //     ],
   //   },
   //   grid: {
-  //     height: 160,
-  //     left: 60,
-  //     right: 50,
+  //     left: 65,
   //     top: 45,
-  //     bottom: 60,
+  //     bottom: 110,
   //   },
   //   xAxis: {
   //     name: "תאריך",
@@ -361,9 +357,10 @@ const GraphicalCard = ({ sectionId, card, hasContainerParent }) => {
         <TimeTableFilter sectionId={sectionId} cardId={card.id} />
       )}
 
-      <ReactECharts option={options} />
+        <ReactECharts option={options}  className="graph-content" />
     </div>
   );
 };
 
 export default GraphicalCard;
+
