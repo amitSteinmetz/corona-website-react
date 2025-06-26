@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using corona_server_side_asp.net.Data;
 
@@ -11,9 +12,11 @@ using corona_server_side_asp.net.Data;
 namespace corona_server_side_asp.net.Migrations
 {
     [DbContext(typeof(CoronaDataContext))]
-    partial class CoronaDataContextModelSnapshot : ModelSnapshot
+    [Migration("20250626142159_Add-tables")]
+    partial class Addtables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -357,16 +360,11 @@ namespace corona_server_side_asp.net.Migrations
                         .HasMaxLength(34)
                         .HasColumnType("nvarchar(34)");
 
-                    b.Property<int?>("SectionModelId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SectionModelId");
 
                     b.ToTable("Tables");
 
@@ -496,20 +494,11 @@ namespace corona_server_side_asp.net.Migrations
                         .HasForeignKey("SectionModelId");
                 });
 
-            modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.TableModel", b =>
-                {
-                    b.HasOne("corona_server_side_asp.net.Models.SectionModel", null)
-                        .WithMany("Tables")
-                        .HasForeignKey("SectionModelId");
-                });
-
             modelBuilder.Entity("corona_server_side_asp.net.Models.SectionModel", b =>
                 {
                     b.Navigation("Cards");
 
                     b.Navigation("RelatedLinks");
-
-                    b.Navigation("Tables");
                 });
 
             modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.ContainerCardModel", b =>

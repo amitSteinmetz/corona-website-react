@@ -2,7 +2,6 @@
 {
     public class GraphicalCardModel : CardModel
     {
-       
         public string Options { get; set; }
         public bool HasTimeRangeFilter { get; set; }
     }

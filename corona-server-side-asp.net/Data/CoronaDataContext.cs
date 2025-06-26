@@ -1,6 +1,7 @@
 ﻿using corona_server_side_asp.net.Helpers;
 using corona_server_side_asp.net.Models;
 using corona_server_side_asp.net.Models.Cards;
+using corona_server_side_asp.net.Models.Tables;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,5 +15,7 @@ namespace corona_server_side_asp.net.Data
         public DbSet<TextualCardModel> TextualCardModels { get; set; }
         public DbSet<GraphicalCardModel> GraphicalCardModels { get; set; }
         public DbSet<ContainerCardModel> ContainerCardModels { get; set; }
+        public DbSet<TableModel> Tables { get; set; }
+        public DbSet<HospitalBedOccupancyTable> HospitalBedOccupancyTables { get; set; }
     }
 }
