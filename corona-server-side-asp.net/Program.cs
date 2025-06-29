@@ -31,6 +31,7 @@ namespace corona_server_side_asp.net
 
             builder.Services.AddTransient<ICardsRepository, CardsRepository>();
             builder.Services.AddTransient<ISectionsRepository, SectionsRepository>();
+            builder.Services.AddTransient<ITablesRepository, TablesRepository>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

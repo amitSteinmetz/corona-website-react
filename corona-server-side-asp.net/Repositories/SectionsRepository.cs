@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using static System.Collections.Specialized.BitVector32;
+using corona_server_side_asp.net.Models.Tables;
 
 namespace corona_server_side_asp.net.Repositories
 {
@@ -24,10 +25,11 @@ namespace corona_server_side_asp.net.Repositories
 
         public async Task<List<SectionModel>> GetSectionsAsync()
         {
-            await PreloadCardTypes();
+            await PreloadSubTypes();
 
             var sections = await _context.Sections
                 .Include(s => s.Cards).Include(s => s.RelatedLinks)
+                .Include(s => s.Tables)
                 .ToListAsync();
 
             _cardsRepository.WriteExcelDataToCards(ref sections);
@@ -43,14 +45,15 @@ namespace corona_server_side_asp.net.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        private async Task PreloadCardTypes()
+        private async Task PreloadSubTypes()
         {
             await _context.Set<TextualCardModel>().Include(tc => tc.Data).LoadAsync();
             await _context.Set<ContainerCardModel>().Include(cc => cc.Children).LoadAsync();
             await _context.Set<GraphicalCardModel>().LoadAsync();
+            await _context.Set<HospitalBedOccupancyTable>().Include(ht => ht.Rows).LoadAsync();
         }
 
-       public async Task<int> AddLinksToSection(int sectionId, List<LinkModel> links)
+        public async Task<int> AddLinksToSection(int sectionId, List<LinkModel> links)
         {
             var section = _context.Sections
                 .Include(s => s.RelatedLinks)

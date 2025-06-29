@@ -1,22 +1,42 @@
-﻿namespace corona_server_side_asp.net.Repositories
+﻿using corona_server_side_asp.net.Data;
+using corona_server_side_asp.net.IRepositories;
+using corona_server_side_asp.net.Migrations;
+using corona_server_side_asp.net.Models.Cards;
+using corona_server_side_asp.net.Models.Tables;
+using Microsoft.EntityFrameworkCore;
+
+namespace corona_server_side_asp.net.Repositories
 {
-    public class TablesRepository
+    public class TablesRepository : ITablesRepository
     {
+        private readonly CoronaDataContext _context;
 
-        public async Task<int> AddTableFromExcel(IFormFile file, string tableTitle)
+        public TablesRepository(CoronaDataContext context)
         {
-            if (file == null || file.Length == 0)
-            {
-                throw new Exception("File cannot be null or empty.");
-            }
+            _context = context;
+        }
 
-            using var stream = new MemoryStream();
-            await file.CopyToAsync(stream);
-            stream.Position = 0;
-            // Assuming you have a method to process the Excel file and extract table data
-            //var tableData = await ProcessExcelFile(stream);
-            // Assuming you have a method to save the table data to the database
-            //return await SaveTableDataToDatabase(tableData);
+        public async Task<int> AddTableToSection(int sectionId, TableModel table)
+        {
+            var section = await _context.Sections
+                .FirstOrDefaultAsync(s => s.Id == sectionId);
+            if (section == null) throw new ArgumentException("Section not found");
+
+            section.Tables.Add(table);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<TableModel> GetTable(int sectionId, int tableId)
+        {
+            var section = await _context.Sections
+                .Include(s => s.Tables)
+                .FirstOrDefaultAsync(s => s.Id == sectionId);
+
+            if (section == null) throw new ArgumentException("Section not found");
+            var table = section.Tables.FirstOrDefault(t => t.Id == tableId);
+            if (table == null) throw new ArgumentException("Table not found in the specified section");
+
+            return table;
         }
     }
 }
