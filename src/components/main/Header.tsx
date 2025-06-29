@@ -10,31 +10,15 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 
 const Header = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
-
+  const [activeLinkIndex, setActiveLinkIndex] = useState(0);
   const [isGradientLineLoadingAnimate, setIsGradientLineLoadingAnimate] =
     useState(false);
-
-  const [isActiveLink, setIsActiveLink] = useState(
-    Array.from({ length: HEADER_NAV_LINKS.length }, () => false)
-  );
 
   useEffect(() => {
     setTimeout(() => {
       setIsGradientLineLoadingAnimate(true);
     }, 1000);
   }, []);
-
-  function onNavLinkClicked(linkIndex: number) {
-    setIsActiveLink((prevState) => {
-      const newState = [...prevState];
-
-      newState.forEach((_, index) => {
-        newState[index] = index !== linkIndex ? false : true;
-      });
-
-      return newState;
-    });
-  }
 
   return (
     <div className="header-container">
@@ -74,11 +58,11 @@ const Header = () => {
             return (
               <div
                 className={`header__nav-link ${
-                  isActiveLink[index] ? "active" : ""
+                  activeLinkIndex === index ? "active" : ""
                 }`}
                 key={index}
                 onClick={() => {
-                  onNavLinkClicked(index);
+                  setActiveLinkIndex(index);
                 }}
               >
                 {link}

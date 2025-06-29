@@ -4,6 +4,8 @@ import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import { useEffect, useState } from "react";
 import webIcon from "../../assets/images/web-icon.png";
 import { Card } from "../../models/card.model";
+import { Table } from "../../models/table.model";
+import TableComponent from "./Table";
 
 const Section = ({ sectionData }: { sectionData: SectionModel }) => {
   const [showSectionLinks, setShowSectionLinks] = useState(false);
@@ -12,7 +14,7 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
     if (arr.length === 0) return null;
 
     return (
-      <div className={`section-${arr[0].type}-cards`}>
+      <div className={`section-${arr[0].type}-cards cards-margin`}>
         {arr.map((card, index: number) => (
           <CardRenderer
             sectionId={sectionData.id}
@@ -27,7 +29,9 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
 
   return (
     <div
-      className={`section-container ${sectionData.id === 1 && "first-section"}`}
+      className={`section-container ${
+        sectionData.id === 1 ? "first-section" : ""
+      }`}
     >
       <div className="section-container__header">
         <h1 className="section-header__title font-xl">{sectionData.title}</h1>
@@ -97,6 +101,12 @@ const Section = ({ sectionData }: { sectionData: SectionModel }) => {
       {renderCards(
         sectionData.cards.filter((card) => card.type === "container")
       )}
+
+      <div className="cards-margin">
+        {sectionData.tables.map((table) => (
+          <TableComponent table={table}></TableComponent>
+        ))}
+      </div>
     </div>
   );
 };
