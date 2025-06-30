@@ -93,6 +93,15 @@ namespace corona_server_side_asp.net.Controllers
         //    return Ok("Description added successfully.");
         //}
 
+        [HttpDelete("")]
+        public async Task<IActionResult> DeleteCardFromSection(int sectionId, int cardId)
+        {
+            // Edge cases check
+            if (sectionId <= 0 || cardId <= 0) return BadRequest("Invalid section ID or card ID.");
+            var result = await _cardsRepository.DeleteCardFromSection(sectionId, cardId);
+            return (result != -1) ? Ok("Card deleted successfully.") : NotFound("Section or card not found.");
+        }
+
         private async Task<string> GetSectionTitle(int sectionId)
         {
             var title = await _cardsRepository.GetCardSectionTitle(sectionId);

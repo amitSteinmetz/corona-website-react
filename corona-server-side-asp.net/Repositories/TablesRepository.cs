@@ -1,6 +1,5 @@
 ﻿using corona_server_side_asp.net.Data;
 using corona_server_side_asp.net.IRepositories;
-using corona_server_side_asp.net.Migrations;
 using corona_server_side_asp.net.Models.Cards;
 using corona_server_side_asp.net.Models.Tables;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +36,22 @@ namespace corona_server_side_asp.net.Repositories
             if (table == null) throw new ArgumentException("Table not found in the specified section");
 
             return table;
+        }
+
+        public async Task<int> DeleteTable(int sectionId, int tableId)
+        {
+            var section = await _context.Sections
+                .Include(s => s.Tables)
+                .FirstOrDefaultAsync(s => s.Id == sectionId);
+
+            if (section == null) throw new ArgumentException("Section not found");
+
+            var table = section.Tables.FirstOrDefault(t => t.Id == tableId);
+            if (table == null) throw new ArgumentException("Table not found in the specified section");
+
+            //section.Tables.Remove(table);
+            _context.Tables.Remove(table);
+            return await _context.SaveChangesAsync();
         }
     }
 }

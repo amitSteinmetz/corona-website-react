@@ -12,8 +12,8 @@ using corona_server_side_asp.net.Data;
 namespace corona_server_side_asp.net.Migrations
 {
     [DbContext(typeof(CoronaDataContext))]
-    [Migration("20250629093609_change table structure again2")]
-    partial class changetablestructureagain2
+    [Migration("20250630110129_reset DB")]
+    partial class resetDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -371,7 +371,7 @@ namespace corona_server_side_asp.net.Migrations
                     b.ToTable("HospitalBedOccupancyItem");
                 });
 
-            modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.TableModel", b =>
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.TableColumn", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -379,9 +379,31 @@ namespace corona_server_side_asp.net.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.PrimitiveCollection<string>("Columns")
+                    b.Property<string>("Key")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TableModelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TableModelId");
+
+                    b.ToTable("TableColumn");
+                });
+
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.TableModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -396,6 +418,10 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -528,6 +554,13 @@ namespace corona_server_side_asp.net.Migrations
                         .HasForeignKey("HospitalBedOccupancyTableId");
                 });
 
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.TableColumn", b =>
+                {
+                    b.HasOne("corona_server_side_asp.net.Models.Tables.TableModel", null)
+                        .WithMany("Columns")
+                        .HasForeignKey("TableModelId");
+                });
+
             modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.TableModel", b =>
                 {
                     b.HasOne("corona_server_side_asp.net.Models.SectionModel", null)
@@ -542,6 +575,11 @@ namespace corona_server_side_asp.net.Migrations
                     b.Navigation("RelatedLinks");
 
                     b.Navigation("Tables");
+                });
+
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.TableModel", b =>
+                {
+                    b.Navigation("Columns");
                 });
 
             modelBuilder.Entity("corona_server_side_asp.net.Models.Cards.ContainerCardModel", b =>

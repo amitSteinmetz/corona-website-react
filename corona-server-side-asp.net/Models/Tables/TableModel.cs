@@ -12,6 +12,6 @@ namespace corona_server_side_asp.net.Models.Tables
         public string Title { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
-        public List<string> Columns { get; set; } = new();
+        public List<TableColumn> Columns { get; set; } = new();
     }
 }

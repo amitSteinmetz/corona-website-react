@@ -6,5 +6,6 @@ namespace corona_server_side_asp.net.IRepositories
     {
         Task<int> AddTableToSection(int sectionId, TableModel table);
         Task<TableModel> GetTable(int sectionId, int tableId);
+        Task<int> DeleteTable(int sectionId, int tableId);
     }
 }

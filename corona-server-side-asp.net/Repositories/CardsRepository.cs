@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Nodes;
 using System.Text.Json;
-using corona_server_side_asp.net.Migrations;
 
 namespace corona_server_side_asp.net.Repositories
 {
@@ -233,6 +232,20 @@ namespace corona_server_side_asp.net.Repositories
                 return graphicalCard;
             }
             else throw new InvalidOperationException("Card is not a graphical card.");
+        }
+
+        public async Task<int> DeleteCardFromSection(int sectionId, int cardId)
+        {
+            var section = await _context.Sections
+                .Include(s => s.Cards)
+                .FirstOrDefaultAsync(s => s.Id == sectionId);
+            if (section == null) return -1;
+            var card = section.Cards.FirstOrDefault(c => c.Id == cardId);
+            if (card == null) return -1;
+            // Remove the card from the section's cards collection
+            _context.Cards.Remove(card); // Remove the card from the DbSet
+            // Alternatively, you can use _context.Cards.Remove(card); if you want to remove it from the DbSet directly
+            return await _context.SaveChangesAsync();
         }
 
         //public async Task<int> AddDescriptionToCard(int sectionId, int cardId, string description)

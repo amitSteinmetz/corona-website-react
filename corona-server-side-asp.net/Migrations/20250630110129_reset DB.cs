@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace corona_server_side_asp.net.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class resetDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,8 +56,7 @@ namespace corona_server_side_asp.net.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RelatedLinks = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -179,10 +178,12 @@ namespace corona_server_side_asp.net.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExcelFileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContainerCardModelId = table.Column<int>(type: "int", nullable: true),
                     Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     SectionModelId = table.Column<int>(type: "int", nullable: true),
-                    Options = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Options = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HasTimeRangeFilter = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,6 +195,50 @@ namespace corona_server_side_asp.net.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Cards_Sections_SectionModelId",
+                        column: x => x.SectionModelId,
+                        principalTable: "Sections",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LinkModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SubTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SectionModelId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LinkModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LinkModel_Sections_SectionModelId",
+                        column: x => x.SectionModelId,
+                        principalTable: "Sections",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tables",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
+                    SectionModelId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tables", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tables_Sections_SectionModelId",
                         column: x => x.SectionModelId,
                         principalTable: "Sections",
                         principalColumn: "Id");
@@ -216,6 +261,47 @@ namespace corona_server_side_asp.net.Migrations
                         name: "FK_CardTextDataModel_Cards_TextualCardModelId",
                         column: x => x.TextualCardModelId,
                         principalTable: "Cards",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HospitalBedOccupancyItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HospitalName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GeneralBedOccupancy = table.Column<double>(type: "float", nullable: false),
+                    InternalDepartmentBedOccupancy = table.Column<double>(type: "float", nullable: false),
+                    HospitalBedOccupancyTableId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HospitalBedOccupancyItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HospitalBedOccupancyItem_Tables_HospitalBedOccupancyTableId",
+                        column: x => x.HospitalBedOccupancyTableId,
+                        principalTable: "Tables",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TableColumn",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Key = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TableModelId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TableColumn", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TableColumn_Tables_TableModelId",
+                        column: x => x.TableModelId,
+                        principalTable: "Tables",
                         principalColumn: "Id");
                 });
 
@@ -272,6 +358,26 @@ namespace corona_server_side_asp.net.Migrations
                 name: "IX_CardTextDataModel_TextualCardModelId",
                 table: "CardTextDataModel",
                 column: "TextualCardModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HospitalBedOccupancyItem_HospitalBedOccupancyTableId",
+                table: "HospitalBedOccupancyItem",
+                column: "HospitalBedOccupancyTableId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LinkModel_SectionModelId",
+                table: "LinkModel",
+                column: "SectionModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TableColumn_TableModelId",
+                table: "TableColumn",
+                column: "TableModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tables_SectionModelId",
+                table: "Tables",
+                column: "SectionModelId");
         }
 
         /// <inheritdoc />
@@ -296,6 +402,15 @@ namespace corona_server_side_asp.net.Migrations
                 name: "CardTextDataModel");
 
             migrationBuilder.DropTable(
+                name: "HospitalBedOccupancyItem");
+
+            migrationBuilder.DropTable(
+                name: "LinkModel");
+
+            migrationBuilder.DropTable(
+                name: "TableColumn");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -303,6 +418,9 @@ namespace corona_server_side_asp.net.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cards");
+
+            migrationBuilder.DropTable(
+                name: "Tables");
 
             migrationBuilder.DropTable(
                 name: "Sections");

@@ -1,6 +1,27 @@
 [
   {
     "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
+    "Method": "DeleteCardFromSection",
+    "RelativePath": "api/Cards",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "cardId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.CardsController",
     "Method": "AddCardToSection",
     "RelativePath": "api/Cards/{sectionId}",
     "HttpMethod": "POST",
@@ -161,6 +182,27 @@
     "Method": "GetTable",
     "RelativePath": "api/Tables/{sectionId}/{tableId}",
     "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tableId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "corona_server_side_asp.net.Controllers.TablesController",
+    "Method": "DeleteTable",
+    "RelativePath": "api/Tables/{sectionId}/{tableId}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [

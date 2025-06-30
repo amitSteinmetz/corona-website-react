@@ -53,5 +53,23 @@ namespace corona_server_side_asp.net.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpDelete("{sectionId}/{tableId}")]
+        public async Task<IActionResult> DeleteTable(int sectionId, int tableId)
+        {
+            try
+            {
+                var result = await _tablesRepository.DeleteTable(sectionId, tableId);
+                return Ok(new { Message = "Table deleted successfully", RowsAffected = result });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
