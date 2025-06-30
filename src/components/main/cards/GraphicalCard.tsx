@@ -1,10 +1,6 @@
 import ReactECharts from "echarts-for-react";
 import { moreInfoBtn } from "../../../assets/svgs";
-import { FiMoreVertical } from "react-icons/fi";
 import { GraphicalCardModel } from "../../../models/card.model";
-import { useState } from "react";
-import { CiShare2 } from "react-icons/ci";
-import { IoIosArrowRoundDown } from "react-icons/io";
 import TimeTableFilter from "../TimeTableFilter";
 import MoreActionsButton from "../MoreActionsButton";
 

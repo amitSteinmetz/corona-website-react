@@ -1,6 +1,56 @@
-table {
-  display: block;
-  width: 100%;
+.table-container {
+  max-height: 250px;
+  overflow-y: auto;
 
-  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background: rgb(225, 240, 236);
+      z-index: 2;
+      text-align: right;
+      cursor: pointer;
+    }
+
+    tbody td,
+    thead th {
+      padding: 8px 4px;
+      font-size: 0.8rem;
+    }
+
+    .row-field {
+      display: flex;
+    }
+  }
+}
+
+.table-column-focused {
+  color: #627ed3;
+}
+
+.percentage-bar {
+  display: flex;
+  height: 4px;
+
+  .inner-bar {
+    background-color: green;
+  }
+
+  .outer-bar {
+    background-color: gray;
+  }
+}
+
+@media (min-width: 500px) {
+  .table-container table {
+    thead th,
+    tbody td {
+      padding: 8px;
+      font-size: 1rem;
+    }
+  }
 }

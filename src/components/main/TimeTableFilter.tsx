@@ -29,7 +29,7 @@ const TimeTableFilter = ({ sectionId, cardId }) => {
         onClick={() => setShowTable(!showTable)}
       >
         <span>{displayedTimeRange.valueInHebrew}</span>
-        <IoIosArrowDown className="font-sm" />
+        <IoIosArrowDown />
       </div>
 
       {showTable && (

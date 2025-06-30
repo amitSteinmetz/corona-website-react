@@ -3,7 +3,13 @@ export interface TableModel {
   title: string;
   type: string; // this will act as the "discriminator"
   description: string;
-  columns: string[];
+  columns: TableColumn[];
+}
+
+export interface TableColumn {
+  id: number;
+  key: string;
+  value: string;
 }
 
 export interface HospitalBedOccupancyTable extends TableModel {
