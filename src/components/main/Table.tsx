@@ -118,27 +118,37 @@ const TableComponent = ({ table }: { table: Table }) => {
 
       <div className="table-filter-container">
         <div
-          className="table-filter__selectBtn"
+          className={`table-filter__selectBtn ${
+            showTableFilterList ? "clicked-filter-border" : ""
+          }`}
           onClick={() => setShowTableFilterList(!showTableFilterList)}
         >
           {`${selectedRows.length} בתי חולים/מוסדות נבחרו`}
-          <IoIosArrowUp className="table-filter__selectBtn_arrow" />
+          {showTableFilterList && (
+            <IoIosArrowUp className="table-filter__selectBtn_arrow" />
+          )}
+          {!showTableFilterList && (
+            <IoIosArrowDown className="table-filter__selectBtn_arrow" />
+          )}
         </div>
 
         {showTableFilterList && (
           <div className="table-filter__list">
-            <button onClick={() => setFilterListCheckedBoxes({})}>
-              ניקוי הבחירה
-            </button>
-            <button
-              onClick={() =>
-                setFilterListCheckedBoxes(
-                  Object.fromEntries(table.rows.map((row) => [row.id, true]))
-                )
-              }
-            >
-              בחר הכל
-            </button>
+            <div className="table-filter__list-buttons">
+              <button onClick={() => setFilterListCheckedBoxes({})}>
+                ניקוי הבחירה
+              </button>
+              <button
+                onClick={() =>
+                  setFilterListCheckedBoxes(
+                    Object.fromEntries(table.rows.map((row) => [row.id, true]))
+                  )
+                }
+              >
+                בחר הכל
+              </button>
+            </div>
+
             <div className="table-filter__list-rows">
               {table.rows.map((row) => (
                 <div className="table-filter__list-rows__item">
@@ -153,9 +163,9 @@ const TableComponent = ({ table }: { table: Table }) => {
               ))}
             </div>
 
-            <div className="table-filter__list_buttons">
+            <div className="table-filter__list-buttons">
               <button onClick={onSubmitFilteredRows}>אישור</button>
-              <button>ביטול</button>
+              <button onClick={() => setShowTableFilterList(false)}>ביטול</button>
             </div>
           </div>
         )}
