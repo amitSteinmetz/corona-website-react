@@ -1,3 +1,38 @@
+.table-filter-container {
+  position: relative;
+
+  .table-filter__selectBtn {
+    cursor: pointer;
+    width: fit-content;
+    padding: 0.5rem 1rem 0.5rem 1.7rem;
+    border-radius: 13px;
+    background-color: rgb(240, 234, 234);
+
+    .table-filter__selectBtn_arrow {
+      position: absolute;
+      top: 12px;
+      margin-right: 3px;
+      font-size: 0.9rem;
+    }
+  }
+
+  .table-filter__list {
+    background-color: white;
+    width: 200px;
+    height: 200px;
+    overflow-y: scroll;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    padding: 0.7rem;
+
+    .table-filter__row {
+      margin: 0.6rem 0;
+      display: flex;
+      column-gap: 0.5rem;
+    }
+  }
+}
+
 .table-container {
   max-height: 250px;
   overflow-y: auto;
@@ -19,11 +54,13 @@
     tbody td,
     thead th {
       padding: 8px 4px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
 
-    .row-field {
+    .row-numerical-field {
       display: flex;
+      column-gap: 0.4rem;
+      align-items: center;
     }
   }
 }
@@ -34,15 +71,23 @@
 
 .percentage-bar {
   display: flex;
-  height: 4px;
+  width: 27px;
+  height: 6px;
 
   .inner-bar {
-    background-color: green;
+    background-color: rgb(4, 153, 199);
   }
 
   .outer-bar {
-    background-color: gray;
+    background-color: rgb(238, 230, 230);
   }
+}
+
+.arrow-btn {
+  cursor: pointer;
+  position: absolute;
+  font-size: 0.9rem;
+  padding: 4px 3px 0 0;
 }
 
 @media (min-width: 500px) {
@@ -52,5 +97,19 @@
       padding: 8px;
       font-size: 1rem;
     }
+  }
+
+  .percentage-bar {
+    width: 35px;
+    height: 8px;
+  }
+
+  .row-numerical-field {
+    column-gap: 0.8rem;
+  }
+
+  .arrow-btn {
+    font-size: 1.2rem;
+    padding: 6px 3px 0 0;
   }
 }

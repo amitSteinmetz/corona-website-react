@@ -5,20 +5,35 @@ import MoreActionsButton from "./MoreActionsButton";
 import { useState } from "react";
 
 const TableComponent = ({ table }: { table: Table }) => {
-  const [rows, setRows] = useState(table.rows);
+  const [selectedRows, setSelectedRows] = useState(table.rows);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
+  const [showTableFilterList, setShowTableFilterList] = useState(false);
+  const [filterListCheckedBoxes, setFilterListCheckedBoxes] = useState(
+    Object.fromEntries(table.rows.map((row) => [row.id, true]))
+  );
+  const checkedCount = Object.values(filterListCheckedBoxes).filter(
+    (isChecked) => isChecked
+  ).length;
+
+  function handleCheckboxChange(
+    changeEvent: React.ChangeEvent<HTMLInputElement>
+  ) {
+    setFilterListCheckedBoxes((prevCheckedBoxes) => ({
+      ...prevCheckedBoxes,
+      [changeEvent.target.id]: changeEvent.target.checked,
+    }));
+  }
 
   function renderTableRows() {
-    return rows.map((row) => (
+    return selectedRows.map((row) => (
       <tr>
         {Object.keys(row).map((key) =>
           key !== "id" ? (
             <td className="bold">
               {row[key] ? (
                 typeof row[key] === "number" ? (
-                  <div className="row-field">
-                    <div>{row[key]} %</div>
+                  <div className="row-numerical-field">
                     <div className="percentage-bar">
                       <div
                         className="inner-bar"
@@ -31,6 +46,7 @@ const TableComponent = ({ table }: { table: Table }) => {
                         style={{ width: `${100 - row[key]}%` }}
                       />
                     </div>
+                    <div>{row[key]}%</div>
                   </div>
                 ) : (
                   row[key]
@@ -45,11 +61,19 @@ const TableComponent = ({ table }: { table: Table }) => {
     ));
   }
 
-  function sortRows(sortKey) {
+  function sortRows(sortKey: string) {
+    // Back to un-ordered state
+    if (sortKey === sortColumn && sortDirection === "desc") {
+      setSortColumn(null);
+      setSortDirection(null);
+      setSelectedRows(table.rows);
+      return;
+    }
+
     const direction =
       sortKey === sortColumn && sortDirection === "asc" ? "desc" : "asc";
 
-    const sortedRows = [...rows].sort((a, b) => {
+    const sortedRows = [...selectedRows].sort((a, b) => {
       const valA = a[sortKey];
       const valB = b[sortKey];
 
@@ -64,7 +88,14 @@ const TableComponent = ({ table }: { table: Table }) => {
 
     setSortColumn(sortKey);
     setSortDirection(direction);
-    setRows(sortedRows);
+    setSelectedRows(sortedRows);
+  }
+
+  function onSubmitFilteredRows() {
+    const filteredRows = table.rows.filter(
+      (row) => filterListCheckedBoxes[row.id] ?? false
+    );
+    setSelectedRows(filteredRows);
   }
 
   return (
@@ -83,6 +114,51 @@ const TableComponent = ({ table }: { table: Table }) => {
         <MoreActionsButton></MoreActionsButton>
       </div>
 
+      <div className="table-filter-container">
+        <div
+          className="table-filter__selectBtn"
+          onClick={() => setShowTableFilterList(!showTableFilterList)}
+        >
+          {`${selectedRows.length} בתי חולים/מוסדות נבחרו`}
+          <IoIosArrowUp className="table-filter__selectBtn_arrow" />
+        </div>
+
+        {showTableFilterList && (
+          <div className="table-filter__list">
+            <button onClick={() => setFilterListCheckedBoxes({})}>
+              ניקוי הבחירה
+            </button>
+            <button
+              onClick={() =>
+                setFilterListCheckedBoxes(
+                  Object.fromEntries(table.rows.map((row) => [row.id, true]))
+                )
+              }
+            >
+              בחר הכל
+            </button>
+            <div className="table-filter__list-rows">
+              {table.rows.map((row) => (
+                <div className="table-filter__list-rows__item">
+                  <input
+                    type="checkbox"
+                    id={row.id + ""}
+                    checked={filterListCheckedBoxes?.[row.id] ?? false}
+                    onChange={handleCheckboxChange}
+                  />
+                  <div>{row.hospitalName}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="table-filter__list_buttons">
+              <button onClick={onSubmitFilteredRows}>אישור</button>
+              <button>ביטול</button>
+            </div>
+          </div>
+        )}
+      </div>
+
       <div className="table-container">
         <table>
           <thead>
@@ -91,16 +167,16 @@ const TableComponent = ({ table }: { table: Table }) => {
                 <th
                   className={`${
                     column.key === sortColumn
-                      ? "table-column-focused bold"
+                      ? "table-column-focused"
                       : "medium"
                   }`}
                   onClick={() => sortRows(column.key)}
                 >
                   {column.value}
-                  {sortDirection === "asc" && sortColumn === column.key && (
+                  {sortDirection === "desc" && sortColumn === column.key && (
                     <IoIosArrowDown className="arrow-btn" />
                   )}
-                  {sortDirection === "desc" && sortColumn === column.key && (
+                  {sortDirection === "asc" && sortColumn === column.key && (
                     <IoIosArrowUp className="arrow-btn" />
                   )}
                 </th>
