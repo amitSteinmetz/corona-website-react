@@ -6,15 +6,16 @@ import { useState } from "react";
 
 const TableComponent = ({ table }: { table: Table }) => {
   const [selectedRows, setSelectedRows] = useState(table.rows);
+  const [selectedRowsOrdered, setSelectedRowsOrdered] = useState(table.rows);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const [showTableFilterList, setShowTableFilterList] = useState(false);
   const [filterListCheckedBoxes, setFilterListCheckedBoxes] = useState(
     Object.fromEntries(table.rows.map((row) => [row.id, true]))
   );
-  const checkedCount = Object.values(filterListCheckedBoxes).filter(
-    (isChecked) => isChecked
-  ).length;
+  // const checkedCount = Object.values(filterListCheckedBoxes).filter(
+  //   (isChecked) => isChecked
+  // ).length;
 
   function handleCheckboxChange(
     changeEvent: React.ChangeEvent<HTMLInputElement>
@@ -26,7 +27,7 @@ const TableComponent = ({ table }: { table: Table }) => {
   }
 
   function renderTableRows() {
-    return selectedRows.map((row) => (
+    return selectedRowsOrdered.map((row) => (
       <tr>
         {Object.keys(row).map((key) =>
           key !== "id" ? (
@@ -66,7 +67,7 @@ const TableComponent = ({ table }: { table: Table }) => {
     if (sortKey === sortColumn && sortDirection === "desc") {
       setSortColumn(null);
       setSortDirection(null);
-      setSelectedRows(table.rows);
+      setSelectedRowsOrdered(selectedRows);
       return;
     }
 
@@ -88,7 +89,7 @@ const TableComponent = ({ table }: { table: Table }) => {
 
     setSortColumn(sortKey);
     setSortDirection(direction);
-    setSelectedRows(sortedRows);
+    setSelectedRowsOrdered(sortedRows);
   }
 
   function onSubmitFilteredRows() {
@@ -96,6 +97,7 @@ const TableComponent = ({ table }: { table: Table }) => {
       (row) => filterListCheckedBoxes[row.id] ?? false
     );
     setSelectedRows(filteredRows);
+    setSelectedRowsOrdered(filteredRows);
   }
 
   return (
