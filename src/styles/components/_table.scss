@@ -1,66 +1,74 @@
-.table-filter-container {
-  position: relative;
-
-  .table-filter__selectBtn {
-    cursor: pointer;
-    width: fit-content;
-    padding: 0.5rem 1rem 0.5rem 1.7rem;
-    border-radius: 13px;
-    background-color: rgb(240, 234, 234);
-
-    .table-filter__selectBtn_arrow {
-      position: absolute;
-      top: 12px;
-      margin-right: 3px;
-      font-size: 0.9rem;
-    }
-  }
-
-  .table-filter__list {
-    background-color: white;
-    width: 200px;
-    height: 200px;
-    overflow-y: scroll;
-    border-radius: 15px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-    padding: 0.7rem;
-
-    .table-filter__row {
-      margin: 0.6rem 0;
-      display: flex;
-      column-gap: 0.5rem;
-    }
-  }
-}
-
 .table-container {
-  max-height: 250px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    table-layout: fixed;
+  .table-filter-container {
+    position: relative;
 
-    thead th {
-      position: sticky;
-      top: 0;
-      background: rgb(225, 240, 236);
-      z-index: 2;
-      text-align: right;
+    .table-filter__selectBtn {
       cursor: pointer;
+      width: fit-content;
+      padding: 0.5rem 1rem 0.5rem 1.7rem;
+      border-radius: 13px;
+      background-color: rgb(240, 234, 234);
+      margin: 1rem 0;
+
+      .table-filter__selectBtn_arrow {
+        position: absolute;
+        top: 12px;
+        margin-right: 3px;
+        font-size: 0.9rem;
+      }
     }
 
-    tbody td,
-    thead th {
-      padding: 8px 4px;
-      font-size: 0.75rem;
-    }
+    .table-filter__list {
+      position: absolute;
+      z-index: 100;
+      background-color: white;
+      width: 210px;
+      height: 200px;
+      overflow-y: scroll;
+      border-radius: 15px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      padding: 0.7rem;
 
-    .row-numerical-field {
-      display: flex;
-      column-gap: 0.4rem;
-      align-items: center;
+      .table-filter__list-rows__item {
+        margin: 0.6rem 0;
+        display: flex;
+        column-gap: 0.5rem;
+      }
+    }
+  }
+
+  .table-rows {
+    // max-height: 250px;
+    overflow-y: auto;
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      table-layout: fixed;
+
+      thead th {
+        position: sticky;
+        top: 0;
+        background: rgb(225, 240, 236);
+        z-index: 2;
+        text-align: right;
+        cursor: pointer;
+      }
+
+      tbody td,
+      thead th {
+        padding: 8px 4px;
+        font-size: 0.75rem;
+      }
+
+      .row-numerical-field {
+        display: flex;
+        column-gap: 0.4rem;
+        align-items: center;
+      }
     }
   }
 }
@@ -91,7 +99,7 @@
 }
 
 @media (min-width: 500px) {
-  .table-container table {
+  .table-container .table-rows table {
     thead th,
     tbody td {
       padding: 8px;

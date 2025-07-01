@@ -99,7 +99,7 @@ const TableComponent = ({ table }: { table: Table }) => {
   }
 
   return (
-    <div className="responsive-container card">
+    <div className="responsive-container card table-container">
       <div className="card__header">
         <div className="card__title bold line-height-2xl">{table.title}</div>
 
@@ -159,7 +159,7 @@ const TableComponent = ({ table }: { table: Table }) => {
         )}
       </div>
 
-      <div className="table-container">
+      <div className="table-rows">
         <table>
           <thead>
             <tr>
