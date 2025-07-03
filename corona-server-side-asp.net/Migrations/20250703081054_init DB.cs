@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace corona_server_side_asp.net.Migrations
 {
     /// <inheritdoc />
-    public partial class resetDB : Migration
+    public partial class initDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -265,7 +265,7 @@ namespace corona_server_side_asp.net.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HospitalBedOccupancyItem",
+                name: "HospitalBedOccupancyItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -277,29 +277,52 @@ namespace corona_server_side_asp.net.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HospitalBedOccupancyItem", x => x.Id);
+                    table.PrimaryKey("PK_HospitalBedOccupancyItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HospitalBedOccupancyItem_Tables_HospitalBedOccupancyTableId",
+                        name: "FK_HospitalBedOccupancyItems_Tables_HospitalBedOccupancyTableId",
                         column: x => x.HospitalBedOccupancyTableId,
                         principalTable: "Tables",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "TableColumn",
+                name: "IncomingPersonsItems",
+                columns: table => new
+                {
+                    SrcCountry = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RiskLevel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TotalAmount = table.Column<int>(type: "int", nullable: false),
+                    VerifiedCitizensAmount = table.Column<int>(type: "int", nullable: false),
+                    VerifiedStrangersAmount = table.Column<int>(type: "int", nullable: false),
+                    TotalVerifiedPercentage = table.Column<double>(type: "float", nullable: true, computedColumnSql: "CASE WHEN [TotalAmount] = 0 THEN NULL ELSE CAST(([VerifiedCitizensAmount] + [VerifiedStrangersAmount]) * 100.0 / [TotalAmount] AS FLOAT) END", stored: true),
+                    IncomingPersonsTableId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IncomingPersonsItems", x => x.SrcCountry);
+                    table.ForeignKey(
+                        name: "FK_IncomingPersonsItems_Tables_IncomingPersonsTableId",
+                        column: x => x.IncomingPersonsTableId,
+                        principalTable: "Tables",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TableColumns",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Key = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InPercentages = table.Column<bool>(type: "bit", nullable: false),
                     TableModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TableColumn", x => x.Id);
+                    table.PrimaryKey("PK_TableColumns", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TableColumn_Tables_TableModelId",
+                        name: "FK_TableColumns_Tables_TableModelId",
                         column: x => x.TableModelId,
                         principalTable: "Tables",
                         principalColumn: "Id");
@@ -360,9 +383,14 @@ namespace corona_server_side_asp.net.Migrations
                 column: "TextualCardModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HospitalBedOccupancyItem_HospitalBedOccupancyTableId",
-                table: "HospitalBedOccupancyItem",
+                name: "IX_HospitalBedOccupancyItems_HospitalBedOccupancyTableId",
+                table: "HospitalBedOccupancyItems",
                 column: "HospitalBedOccupancyTableId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IncomingPersonsItems_IncomingPersonsTableId",
+                table: "IncomingPersonsItems",
+                column: "IncomingPersonsTableId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LinkModel_SectionModelId",
@@ -370,8 +398,8 @@ namespace corona_server_side_asp.net.Migrations
                 column: "SectionModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TableColumn_TableModelId",
-                table: "TableColumn",
+                name: "IX_TableColumns_TableModelId",
+                table: "TableColumns",
                 column: "TableModelId");
 
             migrationBuilder.CreateIndex(
@@ -402,13 +430,16 @@ namespace corona_server_side_asp.net.Migrations
                 name: "CardTextDataModel");
 
             migrationBuilder.DropTable(
-                name: "HospitalBedOccupancyItem");
+                name: "HospitalBedOccupancyItems");
+
+            migrationBuilder.DropTable(
+                name: "IncomingPersonsItems");
 
             migrationBuilder.DropTable(
                 name: "LinkModel");
 
             migrationBuilder.DropTable(
-                name: "TableColumn");
+                name: "TableColumns");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

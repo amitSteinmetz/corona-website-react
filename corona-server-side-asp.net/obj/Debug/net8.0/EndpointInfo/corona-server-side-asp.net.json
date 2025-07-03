@@ -533,6 +533,9 @@
           "value": {
             "type": "string",
             "nullable": true
+          },
+          "inPercentages": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

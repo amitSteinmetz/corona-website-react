@@ -365,7 +365,40 @@ namespace corona_server_side_asp.net.Migrations
 
                     b.HasIndex("HospitalBedOccupancyTableId");
 
-                    b.ToTable("HospitalBedOccupancyItem");
+                    b.ToTable("HospitalBedOccupancyItems");
+                });
+
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.IncomingPersonsItem", b =>
+                {
+                    b.Property<string>("SrcCountry")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("IncomingPersonsTableId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RiskLevel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalAmount")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("TotalVerifiedPercentage")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("float")
+                        .HasComputedColumnSql("CASE WHEN [TotalAmount] = 0 THEN NULL ELSE CAST(([VerifiedCitizensAmount] + [VerifiedStrangersAmount]) * 100.0 / [TotalAmount] AS FLOAT) END", true);
+
+                    b.Property<int>("VerifiedCitizensAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VerifiedStrangersAmount")
+                        .HasColumnType("int");
+
+                    b.HasKey("SrcCountry");
+
+                    b.HasIndex("IncomingPersonsTableId");
+
+                    b.ToTable("IncomingPersonsItems");
                 });
 
             modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.TableColumn", b =>
@@ -375,6 +408,9 @@ namespace corona_server_side_asp.net.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("InPercentages")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Key")
                         .IsRequired()
@@ -391,7 +427,7 @@ namespace corona_server_side_asp.net.Migrations
 
                     b.HasIndex("TableModelId");
 
-                    b.ToTable("TableColumn");
+                    b.ToTable("TableColumns");
                 });
 
             modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.TableModel", b =>
@@ -466,6 +502,13 @@ namespace corona_server_side_asp.net.Migrations
                     b.HasBaseType("corona_server_side_asp.net.Models.Tables.TableModel");
 
                     b.HasDiscriminator().HasValue("HospitalBedOccupancyTable");
+                });
+
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.IncomingPersonsTable", b =>
+                {
+                    b.HasBaseType("corona_server_side_asp.net.Models.Tables.TableModel");
+
+                    b.HasDiscriminator().HasValue("IncomingPersonsTable");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -551,6 +594,13 @@ namespace corona_server_side_asp.net.Migrations
                         .HasForeignKey("HospitalBedOccupancyTableId");
                 });
 
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.IncomingPersonsItem", b =>
+                {
+                    b.HasOne("corona_server_side_asp.net.Models.Tables.IncomingPersonsTable", null)
+                        .WithMany("Rows")
+                        .HasForeignKey("IncomingPersonsTableId");
+                });
+
             modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.TableColumn", b =>
                 {
                     b.HasOne("corona_server_side_asp.net.Models.Tables.TableModel", null)
@@ -590,6 +640,11 @@ namespace corona_server_side_asp.net.Migrations
                 });
 
             modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.HospitalBedOccupancyTable", b =>
+                {
+                    b.Navigation("Rows");
+                });
+
+            modelBuilder.Entity("corona_server_side_asp.net.Models.Tables.IncomingPersonsTable", b =>
                 {
                     b.Navigation("Rows");
                 });

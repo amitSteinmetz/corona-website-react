@@ -6,6 +6,7 @@ namespace corona_server_side_asp.net.Models.Tables
 {
     [JsonConverter(typeof(JsonSubtypes), "Type")]
     [JsonSubtypes.KnownSubType(typeof(HospitalBedOccupancyTable), "hospitalBedOccupancy")]
+    [JsonSubtypes.KnownSubType(typeof(IncomingPersonsTable), "IncomingPersons")]
     public class TableModel
     {
         public int Id { get; set; }

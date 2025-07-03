@@ -40,16 +40,32 @@ namespace corona_server_side_asp.net.Repositories
 
         public async Task<int> DeleteTable(int sectionId, int tableId)
         {
-            var section = await _context.Sections
-                .Include(s => s.Tables)
-                .FirstOrDefaultAsync(s => s.Id == sectionId);
-
+            var section = await _context.Sections.FirstOrDefaultAsync(s => s.Id == sectionId);
             if (section == null) throw new ArgumentException("Section not found");
 
-            var table = section.Tables.FirstOrDefault(t => t.Id == tableId);
+
+            var table = _context.Tables.Include(t => t.Columns).FirstOrDefault(t => t.Id == tableId);
             if (table == null) throw new ArgumentException("Table not found in the specified section");
 
-            //section.Tables.Remove(table);
+            _context.TableColumns.RemoveRange(table.Columns);
+
+            if (table is IncomingPersonsTable)
+            {
+                var incomingPersonsTable = _context.Tables
+                    .OfType<IncomingPersonsTable>()
+                    .Include(t => t.Rows)
+                    .FirstOrDefault(t => t.Id == tableId) ?? throw new ArgumentException("IncomingPersonsTable not found in the specified section");
+                _context.IncomingPersonsItems.RemoveRange(incomingPersonsTable.Rows);
+            }
+            else if (table is HospitalBedOccupancyTable)
+            {
+                var hospitalBedOccupancyTable = _context.Tables
+                    .OfType<HospitalBedOccupancyTable>()
+                    .Include(t => t.Rows)
+                    .FirstOrDefault(t => t.Id == tableId) ?? throw new ArgumentException("HospitalBedOccupancyTable not found in the specified section");
+                _context.HospitalBedOccupancyItems.RemoveRange(hospitalBedOccupancyTable.Rows);
+            }
+
             _context.Tables.Remove(table);
             return await _context.SaveChangesAsync();
         }
