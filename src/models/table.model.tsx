@@ -21,6 +21,10 @@ export interface IncomingPersonsTable extends TableModel {
   rows: IncomingPersonsItem[];
 }
 
+export interface TrafficLightProgramTable extends TableModel {
+  rows: TrafficLightProgramItem[];
+}
+
 export interface HospitalBedOccupancyItem {
   id: number;
   hospitalName: string;
@@ -37,4 +41,17 @@ export interface IncomingPersonsItem {
   TotalVerifiedPercentage: number;
 }
 
-export type Table = HospitalBedOccupancyTable | IncomingPersonsTable;
+export interface TrafficLightProgramItem {
+  id: number;
+  city: string;
+  dailyScore: number;
+  newPatientsPer10000People: number;
+  positiveTestsPercentage: number;
+  vrifiedChangeRate: number;
+  activePatients: number;
+}
+
+export type Table =
+  | HospitalBedOccupancyTable
+  | IncomingPersonsTable
+  | TrafficLightProgramTable;

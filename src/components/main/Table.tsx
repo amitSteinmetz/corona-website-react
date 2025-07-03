@@ -3,18 +3,23 @@ import { moreInfoBtn } from "../../assets/svgs";
 import {
   HospitalBedOccupancyItem,
   IncomingPersonsItem,
+  TrafficLightProgramItem,
   Table,
 } from "../../models/table.model";
 import MoreActionsButton from "./MoreActionsButton";
-import { useEffect, useState } from "react";
-import RiskLevelMap from "./RiskLevelMap";
+import { useState } from "react";
+import ColorMap from "./ColorMap";
 
 const TableComponent = ({ table }: { table: Table }) => {
   const [selectedRows, setSelectedRows] = useState<
-    HospitalBedOccupancyItem[] | IncomingPersonsItem[]
+    | HospitalBedOccupancyItem[]
+    | IncomingPersonsItem[]
+    | TrafficLightProgramItem[]
   >(table.rows);
   const [selectedRowsOrdered, setSelectedRowsOrdered] = useState<
-    HospitalBedOccupancyItem[] | IncomingPersonsItem[]
+    | HospitalBedOccupancyItem[]
+    | IncomingPersonsItem[]
+    | TrafficLightProgramItem[]
   >(table.rows);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
@@ -22,11 +27,23 @@ const TableComponent = ({ table }: { table: Table }) => {
   const [filterListCheckedBoxes, setFilterListCheckedBoxes] = useState(
     Object.fromEntries(table.rows.map((row) => [getRowKey(row), true]))
   );
-  const riskLevelsColors = {
+  const levelsColors = {
     High: "red",
     Medium: "orange",
     Low: "yellow",
+    None: "green",
   };
+
+  function getDailyScoreColor(row, columnName) {
+    const dailyScore = row[columnName];
+    if (dailyScore > 7.5) {
+      return "red";
+    } else if (dailyScore > 6 && dailyScore < 7.5) {
+      return "orange";
+    } else if (dailyScore > 4.5 && dailyScore < 6) {
+      return "yellow";
+    } else return "green";
+  }
 
   function roundNumberToTwoDigits(num: number) {
     // Check if the number has more than two digits after the decimal point
@@ -42,6 +59,8 @@ const TableComponent = ({ table }: { table: Table }) => {
       return (row as IncomingPersonsItem).srcCountry;
     } else if (table.type === "hospitalBedOccupancy") {
       return (row as HospitalBedOccupancyItem).hospitalName;
+    } else if (table.type === "trafficLightProgram") {
+      return (row as TrafficLightProgramItem).city;
     }
   }
 
@@ -50,6 +69,8 @@ const TableComponent = ({ table }: { table: Table }) => {
       return "מדינות";
     } else if (table.type === "hospitalBedOccupancy") {
       return "בתי חולים/מוסדות";
+    } else if (table.type === "trafficLightProgram") {
+      return "יישובים";
     }
   }
 
@@ -68,12 +89,23 @@ const TableComponent = ({ table }: { table: Table }) => {
       else if (columnName === "id") return null;
       else if (columnName === "riskLevel") {
         return (
+          <td className="level-square-container">
+            <div
+              className={`risk-level-square ${levelsColors[row[columnName]]}`}
+            ></div>
+          </td>
+        );
+      } else if (columnName === "dailyScore") {
+        return (
           <td className="risk-level-square-container">
             <div
-              className={`risk-level-square ${
-                riskLevelsColors[row[columnName]]
-              }`}
-            ></div>
+              className={`level-square-background ${getDailyScoreColor(
+                row,
+                columnName
+              )}`}
+            >
+              {row[columnName]}
+            </div>
           </td>
         );
       } else if (
@@ -133,19 +165,32 @@ const TableComponent = ({ table }: { table: Table }) => {
     setSortColumn(sortKey);
     setSortDirection(direction);
     setSelectedRowsOrdered(
-      sortedRows as HospitalBedOccupancyItem[] | IncomingPersonsItem[]
+      sortedRows as
+        | HospitalBedOccupancyItem[]
+        | IncomingPersonsItem[]
+        | TrafficLightProgramItem[]
     );
   }
 
   function onSubmitFilteredRows() {
     const filteredRows = (
-      table.rows as (HospitalBedOccupancyItem | IncomingPersonsItem)[]
+      table.rows as (
+        | HospitalBedOccupancyItem
+        | IncomingPersonsItem
+        | TrafficLightProgramItem
+      )[]
     ).filter((row) => filterListCheckedBoxes[getRowKey(row)] ?? false);
     setSelectedRows(
-      filteredRows as HospitalBedOccupancyItem[] | IncomingPersonsItem[]
+      filteredRows as
+        | HospitalBedOccupancyItem[]
+        | IncomingPersonsItem[]
+        | TrafficLightProgramItem[]
     );
     setSelectedRowsOrdered(
-      filteredRows as HospitalBedOccupancyItem[] | IncomingPersonsItem[]
+      filteredRows as
+        | HospitalBedOccupancyItem[]
+        | IncomingPersonsItem[]
+        | TrafficLightProgramItem[]
     );
   }
 
@@ -224,8 +269,9 @@ const TableComponent = ({ table }: { table: Table }) => {
         )}
       </div>
 
-      {table.type === "IncomingPersons" && (
-        <RiskLevelMap riskLevelsColors={riskLevelsColors} />
+      {(table.type === "IncomingPersons" ||
+        table.type === "trafficLightProgram") && (
+        <ColorMap colorsMap={levelsColors} tableType={table.type} />
       )}
 
       <div className="table-rows">

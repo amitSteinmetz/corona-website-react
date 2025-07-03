@@ -134,7 +134,7 @@
   padding: 4px 3px 0 0;
 }
 
-.risk-level-square-container {
+.level-square-container {
   display: flex;
   align-items: center;
 }
@@ -144,16 +144,25 @@
   height: 18px;
   width: 18px;
   border-radius: 3px;
+}
 
-  &.orange {
-    background-color: orange;
-  }
-  &.yellow {
-    background-color: yellow;
-  }
-  &.red {
-    background-color: red;
-  }
+.level-square-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.orange {
+  background-color: orange;
+}
+.yellow {
+  background-color: yellow;
+}
+.red {
+  background-color: red;
+}
+.green {
+  background-color: green;
 }
 
 @media (min-width: 500px) {
