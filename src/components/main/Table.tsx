@@ -7,6 +7,7 @@ import {
 } from "../../models/table.model";
 import MoreActionsButton from "./MoreActionsButton";
 import { useEffect, useState } from "react";
+import RiskLevelMap from "./RiskLevelMap";
 
 const TableComponent = ({ table }: { table: Table }) => {
   const [selectedRows, setSelectedRows] = useState<
@@ -21,6 +22,11 @@ const TableComponent = ({ table }: { table: Table }) => {
   const [filterListCheckedBoxes, setFilterListCheckedBoxes] = useState(
     Object.fromEntries(table.rows.map((row) => [getRowKey(row), true]))
   );
+  const riskLevelsColors = {
+    High: "red",
+    Medium: "orange",
+    Low: "yellow",
+  };
 
   function roundNumberToTwoDigits(num: number) {
     // Check if the number has more than two digits after the decimal point
@@ -56,43 +62,47 @@ const TableComponent = ({ table }: { table: Table }) => {
     }));
   }
 
-  function renderTableRows() {
-    return selectedRowsOrdered.map((row) => (
-      <tr>
-        {Object.keys(row).map((key) =>
-          key !== "id" ? (
-            <td className="bold">
-              {row[key] ? (
-                typeof row[key] === "number" &&
-                table.columns.find((col) => col.key === key).inPercentages ? (
-                  <div className="row-percentageNumber-field">
-                    {table.type === "hospitalBedOccupancy" && (
-                      <div className="percentage-bar">
-                        <div
-                          className="inner-bar"
-                          style={{
-                            width: `${row[key]}%`,
-                          }}
-                        />
-                        <div
-                          className="outer-bar"
-                          style={{ width: `${100 - row[key]}%` }}
-                        />
-                      </div>
-                    )}
-                    <div>{roundNumberToTwoDigits(row[key] as number)}%</div>
-                  </div>
-                ) : (
-                  row[key]
-                )
-              ) : (
-                "אין מידע"
+  function renderRow(row) {
+    return Object.keys(row).map((columnName) => {
+      if (!row[columnName]) return <td>אין מידע</td>;
+      else if (columnName === "id") return null;
+      else if (columnName === "riskLevel") {
+        return (
+          <td className="risk-level-square-container">
+            <div
+              className={`risk-level-square ${
+                riskLevelsColors[row[columnName]]
+              }`}
+            ></div>
+          </td>
+        );
+      } else if (
+        typeof row[columnName] === "number" &&
+        table.columns.find((col) => col.key === columnName).inPercentages
+      ) {
+        return (
+          <td className="bold">
+            <div className="row-percentageNumber-field">
+              {table.type === "hospitalBedOccupancy" && (
+                <div className="percentage-bar">
+                  <div
+                    className="inner-bar"
+                    style={{
+                      width: `${row[columnName]}%`,
+                    }}
+                  />
+                  <div
+                    className="outer-bar"
+                    style={{ width: `${100 - row[columnName]}%` }}
+                  />
+                </div>
               )}
-            </td>
-          ) : null
-        )}
-      </tr>
-    ));
+              <div>{roundNumberToTwoDigits(row[columnName] as number)}%</div>
+            </div>
+          </td>
+        );
+      } else return <td className="bold">{row[columnName]}</td>;
+    });
   }
 
   function sortRows(sortKey: string) {
@@ -214,6 +224,10 @@ const TableComponent = ({ table }: { table: Table }) => {
         )}
       </div>
 
+      {table.type === "IncomingPersons" && (
+        <RiskLevelMap riskLevelsColors={riskLevelsColors} />
+      )}
+
       <div className="table-rows">
         <table>
           <thead>
@@ -239,7 +253,11 @@ const TableComponent = ({ table }: { table: Table }) => {
             </tr>
           </thead>
 
-          <tbody>{renderTableRows()}</tbody>
+          <tbody>
+            {selectedRowsOrdered.map((row) => (
+              <tr>{renderRow(row)}</tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>

@@ -134,6 +134,28 @@
   padding: 4px 3px 0 0;
 }
 
+.risk-level-square-container {
+  display: flex;
+  align-items: center;
+}
+
+.risk-level-square {
+  margin-right: 13px;
+  height: 18px;
+  width: 18px;
+  border-radius: 3px;
+
+  &.orange {
+    background-color: orange;
+  }
+  &.yellow {
+    background-color: yellow;
+  }
+  &.red {
+    background-color: red;
+  }
+}
+
 @media (min-width: 500px) {
   .table-container {
     .table-rows table {
