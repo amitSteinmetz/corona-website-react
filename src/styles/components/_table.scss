@@ -37,7 +37,7 @@
       border-radius: 15px;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
       padding: 0.2rem 0.7rem 0 0.7rem;
-      animation: fade 0.2s linear; 
+      animation: fade 0.2s linear;
 
       .table-filter__list-rows {
         width: 100%;
@@ -100,7 +100,7 @@
         font-size: 0.75rem;
       }
 
-      .row-numerical-field {
+      .row-percentageNumber-field {
         display: flex;
         column-gap: 0.4rem;
         align-items: center;
@@ -149,7 +149,7 @@
       height: 8px;
     }
 
-    .row-numerical-field {
+    .row-percentageNumber-field {
       column-gap: 0.8rem;
     }
 

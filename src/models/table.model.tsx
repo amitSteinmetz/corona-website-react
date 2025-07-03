@@ -10,10 +10,15 @@ export interface TableColumn {
   id: number;
   key: string;
   value: string;
+  inPercentages: boolean;
 }
 
 export interface HospitalBedOccupancyTable extends TableModel {
   rows: HospitalBedOccupancyItem[];
+}
+
+export interface IncomingPersonsTable extends TableModel {
+  rows: IncomingPersonsItem[];
 }
 
 export interface HospitalBedOccupancyItem {
@@ -23,4 +28,13 @@ export interface HospitalBedOccupancyItem {
   internalDepartmentBedOccupancy: number;
 }
 
-export type Table = HospitalBedOccupancyTable;
+export interface IncomingPersonsItem {
+  srcCountry: string;
+  riskLevel: string;
+  TotalAmount: number;
+  VerifiedCitizensAmount: number;
+  VerifiedStrangersAmount: number;
+  TotalVerifiedPercentage: number;
+}
+
+export type Table = HospitalBedOccupancyTable | IncomingPersonsTable;

@@ -1,21 +1,51 @@
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { moreInfoBtn } from "../../assets/svgs";
-import { Table } from "../../models/table.model";
+import {
+  HospitalBedOccupancyItem,
+  IncomingPersonsItem,
+  Table,
+} from "../../models/table.model";
 import MoreActionsButton from "./MoreActionsButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const TableComponent = ({ table }: { table: Table }) => {
-  const [selectedRows, setSelectedRows] = useState(table.rows);
-  const [selectedRowsOrdered, setSelectedRowsOrdered] = useState(table.rows);
+  const [selectedRows, setSelectedRows] = useState<
+    HospitalBedOccupancyItem[] | IncomingPersonsItem[]
+  >(table.rows);
+  const [selectedRowsOrdered, setSelectedRowsOrdered] = useState<
+    HospitalBedOccupancyItem[] | IncomingPersonsItem[]
+  >(table.rows);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const [showTableFilterList, setShowTableFilterList] = useState(false);
   const [filterListCheckedBoxes, setFilterListCheckedBoxes] = useState(
-    Object.fromEntries(table.rows.map((row) => [row.id, true]))
+    Object.fromEntries(table.rows.map((row) => [getRowKey(row), true]))
   );
-  // const checkedCount = Object.values(filterListCheckedBoxes).filter(
-  //   (isChecked) => isChecked
-  // ).length;
+
+  function roundNumberToTwoDigits(num: number) {
+    // Check if the number has more than two digits after the decimal point
+    const [, amountOFdigitsAfterPoint] = num.toString().split(".");
+    if (!amountOFdigitsAfterPoint || amountOFdigitsAfterPoint.length <= 2)
+      return num;
+
+    return Math.round(num * 100) / 100;
+  }
+
+  function getRowKey(row) {
+    if (table.type === "IncomingPersons") {
+      return (row as IncomingPersonsItem).srcCountry;
+    } else if (table.type === "hospitalBedOccupancy") {
+      return (row as HospitalBedOccupancyItem).hospitalName;
+    }
+  }
+
+  function getFilterPlaceholder() {
+    if (table.type === "IncomingPersons") {
+      return "מדינות";
+    } else if (table.type === "hospitalBedOccupancy") {
+      return "בתי חולים/מוסדות";
+    }
+  }
 
   function handleCheckboxChange(
     changeEvent: React.ChangeEvent<HTMLInputElement>
@@ -33,21 +63,24 @@ const TableComponent = ({ table }: { table: Table }) => {
           key !== "id" ? (
             <td className="bold">
               {row[key] ? (
-                typeof row[key] === "number" ? (
-                  <div className="row-numerical-field">
-                    <div className="percentage-bar">
-                      <div
-                        className="inner-bar"
-                        style={{
-                          width: `${row[key]}%`,
-                        }}
-                      />
-                      <div
-                        className="outer-bar"
-                        style={{ width: `${100 - row[key]}%` }}
-                      />
-                    </div>
-                    <div>{row[key]}%</div>
+                typeof row[key] === "number" &&
+                table.columns.find((col) => col.key === key).inPercentages ? (
+                  <div className="row-percentageNumber-field">
+                    {table.type === "hospitalBedOccupancy" && (
+                      <div className="percentage-bar">
+                        <div
+                          className="inner-bar"
+                          style={{
+                            width: `${row[key]}%`,
+                          }}
+                        />
+                        <div
+                          className="outer-bar"
+                          style={{ width: `${100 - row[key]}%` }}
+                        />
+                      </div>
+                    )}
+                    <div>{roundNumberToTwoDigits(row[key] as number)}%</div>
                   </div>
                 ) : (
                   row[key]
@@ -89,15 +122,21 @@ const TableComponent = ({ table }: { table: Table }) => {
 
     setSortColumn(sortKey);
     setSortDirection(direction);
-    setSelectedRowsOrdered(sortedRows);
+    setSelectedRowsOrdered(
+      sortedRows as HospitalBedOccupancyItem[] | IncomingPersonsItem[]
+    );
   }
 
   function onSubmitFilteredRows() {
-    const filteredRows = table.rows.filter(
-      (row) => filterListCheckedBoxes[row.id] ?? false
+    const filteredRows = (
+      table.rows as (HospitalBedOccupancyItem | IncomingPersonsItem)[]
+    ).filter((row) => filterListCheckedBoxes[getRowKey(row)] ?? false);
+    setSelectedRows(
+      filteredRows as HospitalBedOccupancyItem[] | IncomingPersonsItem[]
     );
-    setSelectedRows(filteredRows);
-    setSelectedRowsOrdered(filteredRows);
+    setSelectedRowsOrdered(
+      filteredRows as HospitalBedOccupancyItem[] | IncomingPersonsItem[]
+    );
   }
 
   return (
@@ -123,7 +162,7 @@ const TableComponent = ({ table }: { table: Table }) => {
           }`}
           onClick={() => setShowTableFilterList(!showTableFilterList)}
         >
-          {`${selectedRows.length} בתי חולים/מוסדות נבחרו`}
+          {`${selectedRows.length} ${getFilterPlaceholder()} נבחרו`}
           {showTableFilterList && (
             <IoIosArrowUp className="table-filter__selectBtn_arrow" />
           )}
@@ -141,7 +180,9 @@ const TableComponent = ({ table }: { table: Table }) => {
               <button
                 onClick={() =>
                   setFilterListCheckedBoxes(
-                    Object.fromEntries(table.rows.map((row) => [row.id, true]))
+                    Object.fromEntries(
+                      table.rows.map((row) => [getRowKey(row), true])
+                    )
                   )
                 }
               >
@@ -154,18 +195,20 @@ const TableComponent = ({ table }: { table: Table }) => {
                 <div className="table-filter__list-rows__item">
                   <input
                     type="checkbox"
-                    id={row.id + ""}
-                    checked={filterListCheckedBoxes?.[row.id] ?? false}
+                    id={getRowKey(row) + ""}
+                    checked={filterListCheckedBoxes?.[getRowKey(row)] ?? false}
                     onChange={handleCheckboxChange}
                   />
-                  <div>{row.hospitalName}</div>
+                  <div>{getRowKey(row)}</div>
                 </div>
               ))}
             </div>
 
             <div className="table-filter__list-buttons">
               <button onClick={onSubmitFilteredRows}>אישור</button>
-              <button onClick={() => setShowTableFilterList(false)}>ביטול</button>
+              <button onClick={() => setShowTableFilterList(false)}>
+                ביטול
+              </button>
             </div>
           </div>
         )}
