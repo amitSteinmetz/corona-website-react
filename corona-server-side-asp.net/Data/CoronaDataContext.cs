@@ -17,9 +17,11 @@ namespace corona_server_side_asp.net.Data
         public DbSet<TableModel> Tables { get; set; }
         public DbSet<HospitalBedOccupancyTable> HospitalBedOccupancyTables { get; set; }
         public DbSet<IncomingPersonsTable> IncomingPersonsTables { get; set; }
+        public DbSet<TrafficLightProgramTable> TrafficLightProgramTables { get; set; }
         public DbSet<TableColumn> TableColumns { get; set; }
         public DbSet<IncomingPersonsItem> IncomingPersonsItems { get; set; }
         public DbSet<HospitalBedOccupancyItem> HospitalBedOccupancyItems { get; set; }
+        public DbSet<TrafficLightProgramItem> TrafficLightProgramItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -9,4 +9,8 @@
     {
         public List<IncomingPersonsItem> Rows { get; set; } = new();
     }
+    public class TrafficLightProgramTable : TableModel
+    {
+        public List<TrafficLightProgramItem> Rows { get; set; } = new();
+    }
 }

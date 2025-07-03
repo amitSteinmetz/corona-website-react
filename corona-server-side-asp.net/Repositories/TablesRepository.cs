@@ -65,8 +65,16 @@ namespace corona_server_side_asp.net.Repositories
                     .FirstOrDefault(t => t.Id == tableId) ?? throw new ArgumentException("HospitalBedOccupancyTable not found in the specified section");
                 _context.HospitalBedOccupancyItems.RemoveRange(hospitalBedOccupancyTable.Rows);
             }
+            else if (table is TrafficLightProgramTable)
+            {
+                var trafficLightProgramTable = _context.Tables
+                    .OfType<TrafficLightProgramTable>()
+                    .Include(t => t.Rows)
+                    .FirstOrDefault(t => t.Id == tableId) ?? throw new ArgumentException("TrafficLightProgramTable not found in the specified section");
+                _context.TrafficLightProgramItems.RemoveRange(trafficLightProgramTable.Rows);
+            }
 
-            _context.Tables.Remove(table);
+                _context.Tables.Remove(table);
             return await _context.SaveChangesAsync();
         }
     }

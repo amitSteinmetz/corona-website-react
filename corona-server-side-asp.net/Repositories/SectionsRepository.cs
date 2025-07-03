@@ -52,6 +52,7 @@ namespace corona_server_side_asp.net.Repositories
             await _context.Set<GraphicalCardModel>().LoadAsync();
             await _context.Set<HospitalBedOccupancyTable>().Include(ht => ht.Rows).LoadAsync();
             await _context.Set<IncomingPersonsTable>().Include(it => it.Rows).LoadAsync();
+            await _context.Set<TrafficLightProgramTable>().Include(tt => tt.Rows).LoadAsync();
         }
 
         public async Task<int> AddLinksToSection(int sectionId, List<LinkModel> links)
